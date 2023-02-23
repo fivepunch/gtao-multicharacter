@@ -2,10 +2,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import "./global.css";
 
-import { Root } from "./components/root";
-import { Select } from "./components/select";
-import { Create } from "./components/create";
-import { Delete } from "./components/delete";
+import { Root } from "./components/Root";
+
+import { Select } from "./components/Select";
+import { Create } from "./components/Create";
+import { Delete } from "./components/Delete";
 
 const router = createBrowserRouter([
   {

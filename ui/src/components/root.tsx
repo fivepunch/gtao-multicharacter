@@ -23,7 +23,7 @@ export function Root() {
       <div
         className={`${getBackgroundByPathname(
           pathname
-        )} w-screen h-screen absolute left-0 top-0`}
+        )} w-screen h-screen absolute left-0 top-0 -z-10`}
       />
       <Outlet />
     </>

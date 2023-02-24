@@ -16,7 +16,7 @@ export function TextInput({ label, ...props }: TextInputProps) {
       <div className="mt-2">
         <input
           type="text"
-          className="block w-full max-w-lg rounded-md border-2 border-transparent focus:border-gray-300 focus:outline-none focus:ring-0 sm:max-w-xs sm:text-sm bg-black/60 transition-all"
+          className="block w-full max-w-lg rounded-md border-2 border-transparent focus:border-gray-300 focus:outline-none focus:ring-0 sm:max-w-xs bg-black/60 transition-all"
           {...props}
         />
       </div>

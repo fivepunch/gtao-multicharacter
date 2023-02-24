@@ -10,8 +10,8 @@ const genderOptions = [
 export function Create() {
   return (
     <div className="h-screen w-full max-w-[1920px]">
-      <form className="h-full w-96 flex flex-col text-white p-8 gap-8 absolute right-0 bg-gradient-to-l from-black to-black/0">
-        <h1 className="font-bold text-xl uppercase inline-flex items-center gap-4">
+      <div className="h-full w-96 absolute right-0 p-8 bg-gradient-to-l from-black to-black/20">
+        <h1 className="w-full inline-flex justify-center items-center gap-2 text-white font-bold text-2xl uppercase">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -32,11 +32,13 @@ export function Create() {
           </span>
           Create character
         </h1>
-        <TextInput label="First name" />
-        <TextInput label="Last name" />
-        <SelectInput label="Gender" options={genderOptions} />
-        <Button className="text-xl mt-8">Create</Button>
-      </form>
+        <form className="flex flex-col gap-4 text-white mt-8">
+          <TextInput label="First name" />
+          <TextInput label="Last name" />
+          <SelectInput label="Gender" options={genderOptions} />
+          <Button className="h-10 mt-6 text-lg">Create</Button>
+        </form>
+      </div>
     </div>
   );
 }

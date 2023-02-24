@@ -32,7 +32,7 @@ export function SelectInput<T extends SelectInputProps<unknown>>({
               </Listbox.Label>
             ) : null}
             <div className="relative mt-1">
-              <Listbox.Button className="relative w-full cursor-default rounded-md outline-none border-2 border-transparent focus:border-gray-300 bg-black/60 py-2 pl-3 pr-10 text-left sm:text-sm transition-all">
+              <Listbox.Button className="relative w-full cursor-default rounded-md outline-none border-2 border-transparent focus:border-gray-300 bg-black/60 py-2 pl-3 pr-10 text-left transition-all">
                 <span className="block truncate">{selected.label}</span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon
@@ -49,7 +49,7 @@ export function SelectInput<T extends SelectInputProps<unknown>>({
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-black/60 py-1 text-base shadow-lg ring-1 ring-gray-300 ring-opacity-5 focus:outline-none sm:text-sm">
+                <Listbox.Options className="z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-black/60 py-1 text-base shadow-lg ring-1 ring-gray-300 ring-opacity-5 focus:outline-none">
                   {options.map((option) => (
                     <Listbox.Option
                       key={option.id}

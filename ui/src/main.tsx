@@ -8,7 +8,7 @@ declare global {
   function GetParentResourceName(): string;
 
   interface Window {
-    gameService: GameService;
+    game: GameService;
   }
 
   var __IS_CFX_NUI: boolean;
@@ -16,7 +16,7 @@ declare global {
 
 window.__IS_CFX_NUI = "GetParentResourceName" in window;
 
-window.gameService = new GameService();
+window.game = new GameService();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

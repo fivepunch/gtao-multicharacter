@@ -1,3 +1,9 @@
+import {
+  UserPlusIcon,
+  TrashIcon,
+  CursorArrowRaysIcon,
+} from "@heroicons/react/24/solid";
+
 export function Select() {
   return (
     <div className="w-screen h-screen text-white font-inter relative">
@@ -41,54 +47,28 @@ export function Select() {
           </svg>
         </button>
       </div>
-      <div className="h-32 w-full absolute bottom-0 bg-gradient-to-t from-black to-black/0">
+      <div className="h-32 w-full absolute bottom-0 bg-gradient-to-t from-black to-black/30">
         <div className="max-w-[1920px] w-full h-full flex items-center gap-16 px-24 py-4">
           <button
             type="button"
-            className="text-xl uppercase font-semibold inline-flex items-center gap-2 transition-all hover:scale-105"
+            className="uppercase font-semibold inline-flex items-center gap-2 transition-all hover:scale-105"
           >
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <line x1="19" y1="8" x2="19" y2="14"></line>
-                <line x1="22" y1="11" x2="16" y2="11"></line>
-              </svg>
-            </span>
+            <CursorArrowRaysIcon className="h-6 w-6" />
+            Select character
+          </button>
+          <button
+            type="button"
+            className="uppercase font-semibold inline-flex items-center gap-2 transition-all hover:scale-105"
+          >
+            <UserPlusIcon className="h-6 w-6" />
             Create character
           </button>
           <button
             type="button"
-            className="text-xl uppercase font-semibold inline-flex items-center gap-2 transition-all hover:scale-105"
+            className="uppercase font-semibold inline-flex items-center gap-2 transition-all hover:scale-105"
           >
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-              </svg>
-            </span>
-            Exit
+            <TrashIcon className="h-6 w-6" />
+            Delete character
           </button>
         </div>
       </div>

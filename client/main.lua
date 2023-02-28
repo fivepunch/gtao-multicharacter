@@ -1,21 +1,3 @@
---[[
-    States
-
-    - Selecting state:
-        Label: 'Select your character'
-        Commands:
-            Backspace -> Exit character selection
-            Left arrow -> Previous page
-            Right arrow -> Next page
-            Delete -> Transition to delete character
-
-    - Deleting state:
-        Label: 'Delete a character'
-        Commands:
-            Backspace -> Exit deleting state back to selecting state
-            Left Arrow -> Previous page
-            Right arrow -> Next page
- ]]
 local Multicharacter = exports['fivepunch-multicharacter']
 
 local characters = {
@@ -29,10 +11,11 @@ local characters = {
     { identifier = 8, name = 'Character 8', model = 'mp_f_cocaine_01' },
 }
 
-function enterSelection()
+function enterMulticharacter()
     gStateMachine = StateMachine({
-        ['selecting'] = function() return SelectingState() end,
-        ['deleting'] = function() return DeletingState() end,
+        ['create'] = function() return CreateState() end,
+        ['select'] = function() return SelectState() end,
+        ['delete'] = function() return DeleteState() end,
     })
 
     Multicharacter:onCharacterSpawn(function(character)
@@ -41,10 +24,10 @@ function enterSelection()
 
     Multicharacter:setIntoCharacterSelection(characters)
 
-    gStateMachine:change('selecting')
+    gStateMachine:change('select')
 end
 
-function exitSelection()
+function exitMulticharacter()
     if gStateMachine then
         gStateMachine:done()
         gStateMachine = nil
@@ -53,12 +36,10 @@ function exitSelection()
     Multicharacter:setOutOfMulticharacter()
 end
 
-RegisterCommand('enter', enterSelection, false)
-RegisterCommand('exit', exitSelection, false)
-RegisterCommand('creation', function()
-    Multicharacter:setIntoCharacterCreation()
+CreateThread(function()
+    while not NetworkIsSessionStarted() do
+        Wait(0)
+    end
 
-    Citizen.Wait(10000)
-
-    Multicharacter:setOutOfMulticharacter()
-end, false)
+    enterMulticharacter()
+end)

@@ -8,14 +8,29 @@ version '1.0.0'
 
 lua54 'yes'
 
-client_script {
+shared_scripts {
+    'shared/utils.lua',
+}
+
+client_scripts {
     'lib/class.lua',
     'lib/stateMachine.lua',
-    'client/instructionalButtons.lua',
+    'client/utils.lua',
+    'client/states/createState.lua',
     'client/states/selectState.lua',
     'client/states/deleteState.lua',
     'client/main.lua'
 }
+
+server_scripts {
+    'server/main.lua'
+}
+
+files {
+    'ui/dist/**/*'
+}
+
+ui_page 'ui/dist/index.html'
 
 dependencies {
     'fivepunch-multicharacter'

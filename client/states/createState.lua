@@ -1,8 +1,8 @@
-SelectState = Class { __includes = State }
+CreateState = Class { __includes = State }
 
 local Multicharacter = exports['fivepunch-multicharacter']
 
-function SelectState:init()
+function CreateState:init()
     Multicharacter:onCharacterSelect(function(character)
         print('Character ' .. character.name .. ' selected!')
 
@@ -15,12 +15,11 @@ function SelectState:init()
     end)
 end
 
-function SelectState:enter(params)
-    SendNUIMessage({ type = 'navigate', payload = '/select' })
+function CreateState:enter(params)
 end
 
-function SelectState:update()
+function CreateState:update()
 end
 
-function SelectState:exit()
+function CreateState:exit()
 end

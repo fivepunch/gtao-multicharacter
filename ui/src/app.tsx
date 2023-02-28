@@ -1,28 +1,28 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 
-import "./global.css";
+import './global.css';
 
-import { Root } from "./components/Root";
+import { Root } from '@/components/Root';
 
-import { Select } from "./components/Select";
-import { Create } from "./components/Create";
-import { Delete } from "./components/Delete";
+import { Select } from '@/components/Select';
+import { Create } from '@/components/Create';
+import { Delete } from '@/components/Delete';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
-    path: "/",
+    path: '/',
     element: <Root />,
     children: [
       {
-        path: "select",
+        path: 'select',
         element: <Select />,
       },
       {
-        path: "create",
+        path: 'create',
         element: <Create />,
       },
       {
-        path: "delete",
+        path: 'delete',
         element: <Delete />,
       },
     ],
@@ -32,3 +32,4 @@ const router = createBrowserRouter([
 export function App() {
   return <RouterProvider router={router} />;
 }
+

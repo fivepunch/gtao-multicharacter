@@ -11,12 +11,25 @@ local characters = {
     { identifier = 8, name = 'Character 8', model = 'mp_f_cocaine_01' },
 }
 
+function onUISetResourceState(state, cb)
+    if not gStateMachine then
+        return cb(true)
+    end
+
+    gStateMachine:change(state)
+
+    cb(true)
+end
+
 function enterMulticharacter()
     gStateMachine = StateMachine({
+        ['idle'] = function() return IdleState() end,
         ['create'] = function() return CreateState() end,
         ['select'] = function() return SelectState() end,
         ['delete'] = function() return DeleteState() end,
     })
+
+    RegisterNUICallback('setResourceState', onUISetResourceState)
 
     Multicharacter:onCharacterSpawn(function(character)
         print('Character ' .. character.name .. ' spawned!')
@@ -24,7 +37,7 @@ function enterMulticharacter()
 
     Multicharacter:setIntoCharacterSelection(characters)
 
-    gStateMachine:change('select')
+    gStateMachine:change('idle')
 end
 
 function exitMulticharacter()

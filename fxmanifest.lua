@@ -16,6 +16,7 @@ client_scripts {
     'lib/class.lua',
     'lib/stateMachine.lua',
     'client/utils.lua',
+    'client/states/idleState.lua',
     'client/states/createState.lua',
     'client/states/selectState.lua',
     'client/states/deleteState.lua',

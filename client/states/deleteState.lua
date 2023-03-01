@@ -20,6 +20,7 @@ function DeleteState:init()
 end
 
 function DeleteState:enter(params)
+    SendNUIMessage({ type = 'navigate', payload = '/delete' })
 end
 
 function DeleteState:update()

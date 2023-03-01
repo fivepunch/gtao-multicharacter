@@ -16,6 +16,7 @@ function CreateState:init()
 end
 
 function CreateState:enter(params)
+    SendNUIMessage({ type = 'navigate', payload = '/create' })
 end
 
 function CreateState:update()

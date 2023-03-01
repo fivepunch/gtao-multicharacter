@@ -1,6 +1,27 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
+import { ResourceState } from '@/shared/states';
+
+if (!__IS_CFX_NUI) {
+  window.game.mock('setResourceState', (state: ResourceState) => {
+    switch (state) {
+      case ResourceState.IDLE:
+        window.game.fakeGameMessage('navigate', '/');
+        break;
+      case ResourceState.SELECT:
+        window.game.fakeGameMessage('navigate', '/select');
+        break;
+      case ResourceState.CREATE:
+        window.game.fakeGameMessage('navigate', '/create');
+        break;
+      case ResourceState.DELETE:
+        window.game.fakeGameMessage('navigate', '/delete');
+        break;
+    }
+  });
+}
+
 function getBackgroundByPathname(pathname: string): string {
   switch (pathname) {
     case '/select':

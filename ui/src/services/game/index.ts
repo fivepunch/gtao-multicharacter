@@ -47,4 +47,26 @@ export class GameService {
   public removeListener(type: string, cb: EventListener): void {
     return this.eventEmitter.removeListener(type, cb);
   }
+
+  public mock<T>(type: string, cb: EventListener): T | unknown {
+    if (__IS_CFX_NUI) return;
+
+    if (!this.mocks) return;
+
+    if (this.mocks && this.mocks[type]) {
+      return;
+    }
+
+    this.mocks[type] = cb;
+  }
+
+  public fakeGameMessage(type: string, payload: unknown): void {
+    if (__IS_CFX_NUI) return;
+
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type, payload },
+      }),
+    );
+  }
 }

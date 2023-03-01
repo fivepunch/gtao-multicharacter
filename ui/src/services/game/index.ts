@@ -22,11 +22,11 @@ export class GameService {
     this.eventEmitter.emit(e.data.type, e.data.payload);
   }
 
-  public async emit<T extends unknown>(endpoint: string, data = {}): Promise<T> {
+  public async emit<T extends unknown>(endpoint: string, data = {}): Promise<T | undefined> {
     if (!__IS_CFX_NUI && this.mocks) {
       const mock = this.mocks[endpoint];
 
-      return mock(data) as T;
+      return mock ? (mock(data) as T) : undefined;
     }
 
     const response = await fetch(`https://${GetParentResourceName()}/${endpoint}`, {

@@ -7,7 +7,7 @@ if (!__IS_CFX_NUI) {
   window.game.mock('setResourceState', (state: ResourceState) => {
     switch (state) {
       case ResourceState.IDLE:
-        window.game.fakeGameMessage('navigate', '/');
+        window.game.fakeGameMessage('navigate', '/idle');
         break;
       case ResourceState.SELECT:
         window.game.fakeGameMessage('navigate', '/select');

@@ -9,7 +9,7 @@ function IdleState:init()
 end
 
 function IdleState:enter(params)
-    SendNUIMessage({ type = 'navigate', payload = '/' })
+    SendNUIMessage({ type = 'navigate', payload = '/idle' })
 end
 
 function IdleState:update()

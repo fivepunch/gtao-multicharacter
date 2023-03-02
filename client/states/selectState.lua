@@ -6,11 +6,10 @@ function SelectState:init()
     Multicharacter:onCharacterSelect(function(character)
         print('Character ' .. character.name .. ' selected!')
 
-        gStateMachine:done() -- No need to transitioning flag
-
         Multicharacter:flipTheBird(character, function()
             Multicharacter:deleteCharacter(character)
-            Multicharacter:setOutOfMulticharacter()
+
+            stopGTAOMulticharacter()
         end)
     end)
 end

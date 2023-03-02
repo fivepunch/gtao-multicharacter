@@ -15,15 +15,19 @@ shared_scripts {
 client_scripts {
     'lib/class.lua',
     'lib/stateMachine.lua',
-    'client/utils.lua',
     'client/states/idleState.lua',
     'client/states/createState.lua',
     'client/states/selectState.lua',
     'client/states/deleteState.lua',
+    'client/modules/standalone.lua',
+    'client/modules/qb.lua',
     'client/main.lua'
 }
 
 server_scripts {
+    '@oxmysql/lib/MySQL.lua',
+    'lib/class.lua',
+    'server/modules/qb.lua',
     'server/main.lua'
 }
 
@@ -34,5 +38,6 @@ files {
 ui_page 'ui/dist/index.html'
 
 dependencies {
-    'fivepunch-multicharacter'
+    'oxmysql',
+    'fivepunch-multicharacter',
 }

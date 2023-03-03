@@ -1,13 +1,46 @@
-import { TextInput } from "@/components/TextInput";
-import { SelectInput } from "@/components/SelectInput";
-import { Button } from "@/components/Button";
+import { useState, useEffect } from 'react';
 
-const genderOptions = [
-  { id: 1, value: true, label: "Male" },
-  { id: 2, value: false, label: "Female" },
-];
+import { FormInput } from '@/types/form';
+
+import { Input } from '@/components/Input';
+import { Button } from '@/components/Button';
+
+if (!__IS_CFX_NUI) {
+  window.game.mock('getCreateCharacterFormStructure', (): FormInput[] => [
+    {
+      type: 'text',
+      name: 'firstName',
+      label: 'First name',
+    },
+    {
+      type: 'text',
+      name: 'lastName',
+      label: 'Last name',
+    },
+    {
+      type: 'select',
+      name: 'gender',
+      label: 'Gender',
+      options: [
+        { value: true, label: 'Male' },
+        { value: false, label: 'Female' },
+      ],
+    },
+  ]);
+}
 
 export function Create() {
+  const [formStructure, setFormStructure] = useState<FormInput[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const structure = await window.game.emit<FormInput[]>('getCreateCharacterFormStructure');
+      if (!structure) return;
+
+      setFormStructure(structure);
+    })();
+  }, []);
+
   return (
     <div className="h-screen w-full max-w-[1920px]">
       <div className="h-full w-96 absolute right-0 p-8 bg-gradient-to-l from-black to-black/20">
@@ -33,9 +66,9 @@ export function Create() {
           Create character
         </h1>
         <form className="flex flex-col gap-4 text-white mt-8">
-          <TextInput label="First name" />
-          <TextInput label="Last name" />
-          <SelectInput label="Gender" options={genderOptions} />
+          {formStructure.map(input => (
+            <Input {...input} />
+          ))}
           <Button className="h-10 mt-6 text-lg">Create</Button>
         </form>
       </div>

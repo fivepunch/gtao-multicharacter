@@ -14,7 +14,7 @@ function startGTAOMulticharacter(framework)
     gStateMachine = StateMachine({
             ['idle'] = function() return IdleState() end,
             ['create'] = function() return CreateState() end,
-            ['select'] = function() return SelectState() end,
+            ['select'] = function() return SelectState(framework) end,
             ['delete'] = function() return DeleteState() end,
     })
 

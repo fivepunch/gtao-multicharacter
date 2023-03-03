@@ -33,13 +33,21 @@ function QBClient:getCharacters()
         })
     end
 
-    return self.cachedCharacters
+    return characters
 end
 
 function QBClient:onCharacterSpawn(character)
     for _, cached in pairs(self.cachedCharacters) do
         if cached.citizenid == character.identifier then
             TriggerEvent('qb-clothing:client:loadPlayerClothing', cached.skin, character.ped)
+        end
+    end
+end
+
+function QBClient:onCharacterSelect(character)
+    for _, cached in pairs(self.cachedCharacters) do
+        if character.identifier == cached.citizenid then
+            TriggerServerEvent('gtao-multicharacter:server:loadCharacter', cached)
         end
     end
 end

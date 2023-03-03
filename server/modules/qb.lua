@@ -4,6 +4,40 @@ local QBCore = nil
 
 QBServer = Class {}
 
+-- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#L29
+function loadHouses(source)
+    local houseGarages = {}
+    local houses = {}
+    local result = MySQL.query.await('SELECT * FROM houselocations', {})
+
+    if result[1] ~= nil then
+        for _, v in pairs(result) do
+            local owned = false
+            if tonumber(v.owned) == 1 then
+                owned = true
+            end
+            local garage = v.garage ~= nil and json.decode(v.garage) or {}
+            houses[v.name] = {
+                coords = json.decode(v.coords),
+                owned = owned,
+                price = v.price,
+                locked = true,
+                adress = v.label,
+                tier = v.tier,
+                garage = garage,
+                decorations = {},
+            }
+            houseGarages[v.name] = {
+                label = v.label,
+                takeVehicle = garage,
+            }
+        end
+    end
+
+    TriggerClientEvent("qb-garages:client:houseGarageConfig", source, houseGarages)
+    TriggerClientEvent("qb-houses:client:setHouseConfig", source, houses)
+end
+
 function QBServer:init()
     QBCore = exports['qb-core']:GetCoreObject()
 
@@ -29,5 +63,31 @@ function QBServer:init()
         end
 
         cb(characters)
+    end)
+
+    -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#L89
+    RegisterNetEvent('gtao-multicharacter:server:loadCharacter', function(character)
+        local src = source
+
+        if not QBCore.Player.Lgin(src, character.citizenid) then return end
+
+        print('^2[qb-core]^7 ' ..
+            GetPlayerName(src) .. ' (Citizen ID: ' .. character.citizenid .. ') has succesfully loaded!')
+
+        QBCore.Commands.Refresh(src)
+
+        loadHouses(src)
+
+        TriggerClientEvent('apartments:client:setupSpawnUI', src, character)
+        TriggerEvent("qb-log:server:CreateLog", "joinleave", "Loaded", "green",
+            "**" ..
+            GetPlayerName(src) ..
+            "** (<@" ..
+            (QBCore.Functions.GetIdentifier(src, 'discord'):gsub("discord:", "") or "unknown") ..
+            "> |  ||" ..
+            (QBCore.Functions.GetIdentifier(src, 'ip') or 'undefined') ..
+            "|| | " ..
+            (QBCore.Functions.GetIdentifier(src, 'license') or 'undefined') ..
+            " | " .. character.citizenid .. " | " .. src .. ") loaded..")
     end)
 end

@@ -2,7 +2,7 @@ SelectState = Class { __includes = State }
 
 local Multicharacter = exports['fivepunch-multicharacter']
 
-function SelectState:init()
+function SelectState:init(framework)
     Multicharacter:onCharacterSelect(function(character)
         print('Character ' .. character.name .. ' selected!')
 
@@ -10,6 +10,8 @@ function SelectState:init()
             Multicharacter:deleteCharacter(character)
 
             stopGTAOMulticharacter()
+
+            framework:onCharacterSelect(character)
         end)
     end)
 end

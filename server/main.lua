@@ -1,5 +1,7 @@
+gFramework = nil
+
 CreateThread(function()
     if isQBCore() then
-        QBServer()
+        gFramework = QBServer()
     end
 end)

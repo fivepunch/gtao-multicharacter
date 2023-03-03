@@ -2,7 +2,7 @@ SelectState = Class { __includes = State }
 
 local Multicharacter = exports['fivepunch-multicharacter']
 
-function SelectState:init(framework)
+function SelectState:init()
     Multicharacter:onCharacterSelect(function(character)
         print('Character ' .. character.name .. ' selected!')
 
@@ -11,7 +11,7 @@ function SelectState:init(framework)
 
             stopGTAOMulticharacter()
 
-            framework:onCharacterSelect(character)
+            gFramework:onCharacterSelect(character)
         end)
     end)
 end

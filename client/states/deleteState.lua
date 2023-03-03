@@ -2,10 +2,10 @@ DeleteState = Class { __includes = State }
 
 local Multicharacter = exports['fivepunch-multicharacter']
 
-function DeleteState:init(framework)
+function DeleteState:init()
     Multicharacter:onCharacterSelect(function(character)
         Multicharacter:flipTheBird(character, function()
-            framework:onCharacterDelete(character)
+            gFramework:onCharacterDelete(character)
             Multicharacter:deleteCharacter(character)
         end)
     end)

@@ -1,3 +1,6 @@
+gFramework = nil
+gStateMachine = nil
+
 local Multicharacter = exports['fivepunch-multicharacter']
 
 function onUISetResourceState(state, cb)
@@ -11,18 +14,30 @@ function onUISetResourceState(state, cb)
 end
 
 function startGTAOMulticharacter(framework)
+    if isQBCore() then
+        gFramework = QBClient()
+    end
+
+    -- if isESX() then
+    --     gFramework = ESXClient()
+    -- end
+
+    -- if isVRP() then
+    --     gFramework = VRPClient()
+    -- end
+
     gStateMachine = StateMachine({
-            ['idle'] = function() return IdleState() end,
-            ['create'] = function() return CreateState() end,
-            ['select'] = function() return SelectState(framework) end,
-            ['delete'] = function() return DeleteState(framework) end,
+        ['idle'] = function() return IdleState() end,
+        ['create'] = function() return CreateState() end,
+        ['select'] = function() return SelectState() end,
+        ['delete'] = function() return DeleteState() end,
     })
 
     Multicharacter:onCharacterSpawn(function(character)
-        framework:onCharacterSpawn(character)
+        gFramework:onCharacterSpawn(character)
     end)
 
-    Multicharacter:setIntoCharacterSelection(framework:getCharacters())
+    Multicharacter:setIntoCharacterSelection(gFramework:getCharacters())
 
     gStateMachine:change('idle')
 
@@ -34,6 +49,10 @@ function stopGTAOMulticharacter()
     if gStateMachine then
         gStateMachine:done()
         gStateMachine = nil
+    end
+
+    if gFramework then
+        gFramework = nil
     end
 
     Multicharacter:setOutOfMulticharacter()
@@ -51,17 +70,5 @@ end)
 CreateThread(function()
     RegisterNUICallback('setResourceState', onUISetResourceState)
 
-    if isQBCore() then
-        return startGTAOMulticharacter(QBClient())
-    end
-
-    -- if isESX() then
-    --     return startGTAOMulticharacter(QBClient())
-    -- end
-
-    -- if isVRP() then
-    --     return startGTAOMulticharacter(QBClient())
-    -- end
-
-    startGTAOMulticharacter(StandaloneClient())
+    startGTAOMulticharacter()
 end)

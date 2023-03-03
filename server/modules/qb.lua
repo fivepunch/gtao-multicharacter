@@ -5,7 +5,7 @@ local QBCore = nil
 QBServer = Class {}
 
 -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#L29
-function loadHouses(source)
+local function loadHouses(source)
     local houseGarages = {}
     local houses = {}
     local result = MySQL.query.await('SELECT * FROM houselocations', {})
@@ -36,6 +36,29 @@ function loadHouses(source)
 
     TriggerClientEvent("qb-garages:client:houseGarageConfig", source, houseGarages)
     TriggerClientEvent("qb-houses:client:setHouseConfig", source, houses)
+end
+
+-- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#L6
+local function giveStarterItems(source)
+    local Player = QBCore.Functions.GetPlayer(source)
+
+    for _, v in pairs(QBCore.Shared.StarterItems) do
+        local info = {}
+        if v.item == "id_card" then
+            info.citizenid = Player.PlayerData.citizenid
+            info.firstname = Player.PlayerData.charinfo.firstname
+            info.lastname = Player.PlayerData.charinfo.lastname
+            info.birthdate = Player.PlayerData.charinfo.birthdate
+            info.gender = Player.PlayerData.charinfo.gender
+            info.nationality = Player.PlayerData.charinfo.nationality
+        elseif v.item == "driver_license" then
+            info.firstname = Player.PlayerData.charinfo.firstname
+            info.lastname = Player.PlayerData.charinfo.lastname
+            info.birthdate = Player.PlayerData.charinfo.birthdate
+            info.type = "Class C Driver License"
+        end
+        Player.Functions.AddItem(v.item, v.amount, false, info)
+    end
 end
 
 function QBServer:init()
@@ -89,6 +112,25 @@ function QBServer:init()
             "|| | " ..
             (QBCore.Functions.GetIdentifier(src, 'license') or 'undefined') ..
             " | " .. character.citizenid .. " | " .. src .. ") loaded..")
+    end)
+
+    -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#L103
+    RegisterNetEvent('gtao-multicharacter:server:createCharacter', function(charinfo)
+        local src = source
+
+        local character = {
+            cid = charinfo.cid,
+            charinfo = charinfo
+        }
+
+        if not QBCore.Player.Login(src, false, character) then return end
+
+        QBCore.Commands.Refresh(src)
+
+        loadHouses(src)
+        giveStarterItems(SetScriptedConversionCoordThisFrame)
+
+        TriggerClientEvent('apartments:client:setupSpawnUI', src, character)
     end)
 
     -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#LL131-L135C5

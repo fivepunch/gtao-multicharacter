@@ -90,4 +90,10 @@ function QBServer:init()
             (QBCore.Functions.GetIdentifier(src, 'license') or 'undefined') ..
             " | " .. character.citizenid .. " | " .. src .. ") loaded..")
     end)
+
+    -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#LL131-L135C5
+    RegisterNetEvent('gtao-multicharacter:server:deleteCharacter', function(citizenid)
+        local src = source
+        QBCore.Player.DeleteCharacter(src, citizenid)
+    end)
 end

@@ -15,7 +15,7 @@ function startGTAOMulticharacter(framework)
             ['idle'] = function() return IdleState() end,
             ['create'] = function() return CreateState() end,
             ['select'] = function() return SelectState(framework) end,
-            ['delete'] = function() return DeleteState() end,
+            ['delete'] = function() return DeleteState(framework) end,
     })
 
     Multicharacter:onCharacterSpawn(function(character)

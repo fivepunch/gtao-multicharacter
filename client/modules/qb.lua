@@ -51,3 +51,7 @@ function QBClient:onCharacterSelect(character)
         end
     end
 end
+
+function QBClient:onCharacterDelete(character)
+    TriggerServerEvent('gtao-multicharacter:server:deleteCharacter', character.identifier) -- citizenid
+end

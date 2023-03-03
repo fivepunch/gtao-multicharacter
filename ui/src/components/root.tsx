@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
-import { ResourceState } from '@/shared/states';
+import { ResourceState } from '@/types/states';
 
 if (!__IS_CFX_NUI) {
   window.game.mock('setResourceState', (state: ResourceState) => {

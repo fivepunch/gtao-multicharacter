@@ -3,7 +3,7 @@ import { UserPlusIcon, TrashIcon, CursorArrowRaysIcon } from '@heroicons/react/2
 import { Arrows } from '@/components/Arrows';
 import { BottomMenu } from '@/components/BottomMenu';
 
-import { ResourceState } from '@/shared/states';
+import { ResourceState } from '@/types/states';
 
 export function Idle() {
   const onSelect = (): void => {

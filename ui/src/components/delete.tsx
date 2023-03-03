@@ -3,7 +3,7 @@ import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
 import { Arrows } from '@/components/Arrows';
 import { BottomMenu } from '@/components/BottomMenu';
 
-import { ResourceState } from '@/shared/states';
+import { ResourceState } from '@/types/states';
 
 export function Delete() {
   return (

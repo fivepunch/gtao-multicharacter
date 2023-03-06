@@ -70,7 +70,10 @@ function QBServer:init()
         local characters = {}
 
         local query =
-        'SELECT players.*, player_outfits.model, player_outfits.skin FROM players INNER JOIN player_outfits ON player_outfits.citizenid = players.citizenid WHERE license = ? LIMIT 1'
+            'SELECT players.*, playerskins.model, playerskins.skin ' ..
+            'FROM players ' ..
+            'INNER JOIN playerskins on players.citizenid = playerskins.citizenid ' ..
+            'WHERE license = ?'
         local rawCharacters = MySQL.query.await(query, { license })
 
         for i = 1, (#rawCharacters), 1 do

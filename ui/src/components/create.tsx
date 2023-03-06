@@ -41,6 +41,16 @@ export function Create() {
     })();
   }, []);
 
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    const form = Object.fromEntries(formData.entries());
+
+    await window.game.emit('createCharacter', form);
+  }
+
   return (
     <div className="h-screen w-full max-w-[1920px]">
       <div className="h-full w-96 absolute right-0 p-8 bg-gradient-to-l from-black to-black/20">
@@ -65,11 +75,13 @@ export function Create() {
           </span>
           Create character
         </h1>
-        <form className="flex flex-col gap-4 text-white mt-8">
+        <form className="flex flex-col gap-4 text-white mt-8" onSubmit={handleSubmit}>
           {formStructure.map(input => (
             <Input {...input} />
           ))}
-          <Button className="h-10 mt-6 text-lg">Create</Button>
+          <Button type="submit" className="h-10 mt-6 text-lg">
+            Create
+          </Button>
         </form>
       </div>
     </div>

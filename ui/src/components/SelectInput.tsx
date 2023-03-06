@@ -9,12 +9,13 @@ interface SelectOption<T extends unknown> {
   label: string;
 }
 
-interface SelectInputProps<T> {
+interface SelectInputProps<T> extends React.ComponentPropsWithoutRef<'input'> {
   label?: string;
   options: SelectOption<T>[];
 }
 
-export function SelectInput<T extends SelectInputProps<unknown>>({ label, options }: T) {
+// When creating custom inputs that don't have a <input /> we should use an <input type="hidden" /> to bind it's value to the form data
+export function SelectInput<T extends SelectInputProps<unknown>>({ label, options, ...props }: T) {
   const [selected, setSelected] = useState(options[0]);
 
   return (
@@ -76,6 +77,7 @@ export function SelectInput<T extends SelectInputProps<unknown>>({ label, option
           </>
         )}
       </Listbox>
+      <input {...props} type="hidden" value={selected.value} />
     </div>
   );
 }

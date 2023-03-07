@@ -28,12 +28,36 @@ function QBClient:getCharacters()
     for _, character in pairs(self.cachedCharacters) do
         table.insert(characters, {
             identifier = character.citizenid,
-            name = character.name,
+            name = string.format('%s %s', character.charinfo.firstname, character.charinfo.lastname),
             model = character.model,
         })
     end
 
     return characters
+end
+
+function QBClient:getCreateCharacterFormStructure()
+    return {
+        {
+            type = 'text',
+            name = 'firstname',
+            label = 'First name',
+        },
+        {
+            type = 'text',
+            name = 'lastname',
+            label = 'Last name',
+        },
+        {
+            type = 'select',
+            name = 'gender',
+            label = 'Gender',
+            options = {
+                { value = 0, label = 'Male' },
+                { value = 1, label = 'Female' },
+            },
+        }
+    }
 end
 
 function QBClient:onCharacterSpawn(character)
@@ -50,6 +74,49 @@ function QBClient:onCharacterSelect(character)
             TriggerServerEvent('gtao-multicharacter:server:loadCharacter', cached)
         end
     end
+end
+
+function QBClient:onCharacterCreate(character)
+    -- QB doesn't auto assign a updated cid when creating a character
+    local cid = 1
+
+    for _, cached in pairs(self.cachedCharacters) do
+        if cached.cid > cid then
+            cid = cached.cid
+        end
+    end
+
+    character.cid = cid
+
+    local p = promise.new()
+
+    QBCore.Functions.TriggerCallback("gtao-multicharacter:server:createCharacter", function()
+        p:resolve()
+    end, character)
+
+    Citizen.Await(p)
+
+    SendNUIMessage({ type = 'navigate', payload = '/' })
+
+    TriggerEvent('qb-clothes:client:CreateFirstCharacter')
+
+    local onMenuCloseEvent = nil
+
+    onMenuCloseEvent = AddEventHandler('qb-clothing:client:onMenuClose', function()
+        if onMenuCloseEvent then
+            RemoveEventHandler(onMenuCloseEvent)
+        end
+
+        TriggerServerEvent('gtao-multicharacter:server:characterCreationCompleted')
+
+        local onPlayerUnloadEvent = nil
+
+        RegisterNetEvent('QBCore:Client:OnPlayerUnload')
+        onPlayerUnloadEvent = AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+            RemoveEventHandler(onPlayerUnloadEvent)
+            gStateMachine:change('idle', { transition = false })
+        end)
+    end)
 end
 
 function QBClient:onCharacterDelete(character)

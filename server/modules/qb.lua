@@ -95,7 +95,7 @@ function QBServer:init()
     RegisterNetEvent('gtao-multicharacter:server:loadCharacter', function(character)
         local src = source
 
-        if not QBCore.Player.Lgin(src, character.citizenid) then return end
+        if not QBCore.Player.Login(src, character.citizenid) then return end
 
         print('^2[qb-core]^7 ' ..
             GetPlayerName(src) .. ' (Citizen ID: ' .. character.citizenid .. ') has succesfully loaded!')
@@ -118,22 +118,26 @@ function QBServer:init()
     end)
 
     -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#L103
-    RegisterNetEvent('gtao-multicharacter:server:createCharacter', function(charinfo)
-        local src = source
-
+    QBCore.Functions.CreateCallback('gtao-multicharacter:server:createCharacter', function(source, cb, charinfo)
         local character = {
             cid = charinfo.cid,
             charinfo = charinfo
         }
 
-        if not QBCore.Player.Login(src, false, character) then return end
+        if not QBCore.Player.Login(source, false, character) then return end
 
-        QBCore.Commands.Refresh(src)
+        QBCore.Commands.Refresh(source)
 
-        loadHouses(src)
-        giveStarterItems(SetScriptedConversionCoordThisFrame)
+        loadHouses(source)
+        giveStarterItems(source)
 
-        TriggerClientEvent('apartments:client:setupSpawnUI', src, character)
+        cb(true)
+    end)
+
+    RegisterNetEvent('gtao-multicharacter:server:characterCreationCompleted', function()
+        local src = source
+
+        QBCore.Player.Logout(src)
     end)
 
     -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#LL131-L135C5

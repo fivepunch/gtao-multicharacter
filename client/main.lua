@@ -13,6 +13,22 @@ function onUISetResourceState(state, cb)
     cb(true)
 end
 
+function OnUIGetCreateCharacterFormStructure(_, cb)
+    if not gFramework then
+        return cb({})
+    end
+
+    cb(gFramework:getCreateCharacterFormStructure())
+end
+
+function OnUICreateCharacter(data, cb)
+    if not gFramework then
+        return cb({})
+    end
+
+    gFramework:onCharacterCreate(data)
+end
+
 function startGTAOMulticharacter(framework)
     if isQBCore() then
         gFramework = QBClient()
@@ -33,16 +49,7 @@ function startGTAOMulticharacter(framework)
         ['delete'] = function() return DeleteState() end,
     })
 
-    Multicharacter:onCharacterSpawn(function(character)
-        gFramework:onCharacterSpawn(character)
-    end)
-
-    Multicharacter:setIntoCharacterSelection(gFramework:getCharacters())
-
     gStateMachine:change('idle')
-
-    SetNuiFocus(true, true)
-    SetNuiFocusKeepInput(true)
 end
 
 function stopGTAOMulticharacter()
@@ -69,6 +76,13 @@ end)
 
 CreateThread(function()
     RegisterNUICallback('setResourceState', onUISetResourceState)
+    RegisterNUICallback('getCreateCharacterFormStructure', OnUIGetCreateCharacterFormStructure)
+    RegisterNUICallback('createCharacter', OnUICreateCharacter)
 
-    startGTAOMulticharacter()
+    while true do
+        Wait(0)
+        if NetworkIsSessionStarted() then
+            return startGTAOMulticharacter()
+        end
+    end
 end)

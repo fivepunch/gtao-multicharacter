@@ -59,6 +59,7 @@ function stopGTAOMulticharacter()
     end
 
     if gFramework then
+        gFramework:destroy()
         gFramework = nil
     end
 

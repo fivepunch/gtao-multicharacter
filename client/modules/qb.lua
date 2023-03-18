@@ -5,6 +5,8 @@ QBClient = Class {}
 function QBClient:init()
     QBCore = exports['qb-core']:GetCoreObject()
 
+    TriggerEvent('qb-weathersync:client:DisableSync')
+
     self.cachedCharacters = {}
 end
 
@@ -121,4 +123,8 @@ end
 
 function QBClient:onCharacterDelete(character)
     TriggerServerEvent('gtao-multicharacter:server:deleteCharacter', character.identifier) -- citizenid
+end
+
+function QBClient:destroy()
+    TriggerEvent('qb-weathersync:client:EnableSync')
 end

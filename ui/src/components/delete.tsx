@@ -12,7 +12,7 @@ function DeleteOptions() {
           onClick={() => window.game.emit('setResourceState', ResourceState.IDLE)}
     >
       <ArrowUturnLeftIcon className="h-6 w-6" />
-      Voltar
+      Return
     </button>
   );
 }

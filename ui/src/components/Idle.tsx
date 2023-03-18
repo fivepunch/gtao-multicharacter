@@ -1,11 +1,10 @@
 import { UserPlusIcon, TrashIcon, CursorArrowRaysIcon } from '@heroicons/react/24/solid';
 
-import { Arrows } from '@/components/Arrows';
-import { BottomMenu } from '@/components/BottomMenu';
+import { SelectionMenu } from '@/components/SelectionMenu';
 
 import { ResourceState } from '@/types/states';
 
-export function Idle() {
+function IdleOptions() {
   const onSelect = (): void => {
     window.game.emit('setResourceState', ResourceState.SELECT);
   };
@@ -19,10 +18,8 @@ export function Idle() {
   };
 
   return (
-    <div className="w-screen h-screen text-white font-inter relative">
-      <Arrows />
-      <BottomMenu>
-        <button
+    <>
+    <button
           type="button"
           className="uppercase font-semibold inline-flex items-center gap-2 transition-all hover:scale-105"
           onClick={onSelect}
@@ -46,7 +43,10 @@ export function Idle() {
           <TrashIcon className="h-6 w-6" />
           Delete character
         </button>
-      </BottomMenu>
-    </div>
+    </>
   );
+}
+
+export function Idle() {
+  return <SelectionMenu options={<IdleOptions />} />
 }

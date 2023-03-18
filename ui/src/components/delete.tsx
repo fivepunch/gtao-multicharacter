@@ -1,24 +1,22 @@
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
 
-import { Arrows } from '@/components/Arrows';
-import { BottomMenu } from '@/components/BottomMenu';
+import { SelectionMenu } from '@/components/SelectionMenu';
 
 import { ResourceState } from '@/types/states';
 
-export function Delete() {
+function DeleteOptions() {
   return (
-    <div className="w-screen h-screen text-white font-inter relative">
-      <Arrows />
-      <BottomMenu>
-        <button
+    <button
           type="button"
           className="uppercase font-semibold inline-flex items-center gap-2 transition-all hover:scale-105"
           onClick={() => window.game.emit('setResourceState', ResourceState.IDLE)}
-        >
-          <ArrowUturnLeftIcon className="h-6 w-6" />
-          Voltar
-        </button>
-      </BottomMenu>
-    </div>
+    >
+      <ArrowUturnLeftIcon className="h-6 w-6" />
+      Voltar
+    </button>
   );
+}
+
+export function Delete() {
+  return <SelectionMenu options={<DeleteOptions />} />;
 }

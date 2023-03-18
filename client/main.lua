@@ -3,7 +3,7 @@ gStateMachine = nil
 
 local Multicharacter = exports['fivepunch-multicharacter']
 
-function onUISetResourceState(state, cb)
+local function onUISetResourceState(state, cb)
     if not gStateMachine then
         return cb(true)
     end
@@ -13,7 +13,7 @@ function onUISetResourceState(state, cb)
     cb(true)
 end
 
-function OnUIGetCreateCharacterFormStructure(_, cb)
+local function OnUIGetCreateCharacterFormStructure(_, cb)
     if not gFramework then
         return cb({})
     end
@@ -21,12 +21,28 @@ function OnUIGetCreateCharacterFormStructure(_, cb)
     cb(gFramework:getCreateCharacterFormStructure())
 end
 
-function OnUICreateCharacter(data, cb)
+local function OnUICreateCharacter(data, cb)
     if not gFramework then
         return cb({})
     end
 
     gFramework:onCharacterCreate(data)
+end
+
+local function OnUIPreviousCharacters(_, cb)
+    if not gStateMachine then
+        cb(false)
+    end
+
+    Multicharacter:previousPage()
+end
+
+local function OnUINextCharacters(_, cb)
+    if not gStateMachine then
+        cb(false)
+    end
+
+    Multicharacter:nextPage()
 end
 
 function startGTAOMulticharacter(framework)
@@ -79,6 +95,8 @@ CreateThread(function()
     RegisterNUICallback('setResourceState', onUISetResourceState)
     RegisterNUICallback('getCreateCharacterFormStructure', OnUIGetCreateCharacterFormStructure)
     RegisterNUICallback('createCharacter', OnUICreateCharacter)
+    RegisterNUICallback('previousCharacters', OnUIPreviousCharacters)
+    RegisterNUICallback('nextCharacters', OnUINextCharacters)
 
     while true do
         Wait(0)

@@ -47,7 +47,7 @@ export function Root() {
     return () => {
       disposeNavigateEvent();
     };
-  }, [navigate]);
+  }, []);
 
   if (__IS_CFX_NUI) {
     return <Outlet />;

@@ -3,12 +3,12 @@ gStateMachine = nil
 
 local Multicharacter = exports['fivepunch-multicharacter']
 
-local function onUISetResourceState(state, cb)
+local function onUISetResourceState(data, cb)
     if not gStateMachine then
         return cb(true)
     end
 
-    gStateMachine:change(state)
+    gStateMachine:change(data.state, data.parameters)
 
     cb(true)
 end

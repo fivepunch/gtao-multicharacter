@@ -6,15 +6,15 @@ import { ResourceState } from '@/types/states';
 
 function IdleOptions() {
   const onSelect = (): void => {
-    window.game.emit('setResourceState', ResourceState.SELECT);
+    window.game.emit('setResourceState', { state: ResourceState.SELECT });
   };
 
   const onCreate = (): void => {
-    window.game.emit('setResourceState', ResourceState.CREATE);
+    window.game.emit('setResourceState', { state: ResourceState.CREATE });
   };
 
   const onDelete = (): void => {
-    window.game.emit('setResourceState', ResourceState.DELETE);
+    window.game.emit('setResourceState', { state: ResourceState.DELETE });
   };
 
   return (

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 
 import { FormInput } from '@/types/form';
+import { ResourceState } from '@/types/states';
 
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
@@ -53,8 +55,17 @@ export function Create() {
 
   return (
     <div className="h-screen w-full max-w-[1920px]">
-      <div className="h-full w-96 absolute right-0 p-8 bg-gradient-to-l from-black to-black/20">
-        <h1 className="w-full inline-flex justify-center items-center gap-2 text-white font-bold text-2xl uppercase">
+      <div
+        className="h-full w-96 absolute right-0 p-8 bg-gradient-to-l from-black to-black/20"
+        onClick={() =>
+          window.game.emit('setResourceState', { state: ResourceState.IDLE, parameters: { transition: false } })
+        }
+      >
+        <button type="button" className="text-white font-medium inline-flex items-center">
+          <ChevronLeftIcon className="h-4 w-4 mr-4" />
+          Return to selection
+        </button>
+        <h1 className="w-full inline-flex justify-center items-center gap-2 text-white font-bold text-2xl uppercase mt-10">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"

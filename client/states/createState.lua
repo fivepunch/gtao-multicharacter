@@ -3,6 +3,8 @@ CreateState = Class { __includes = State }
 local Multicharacter = exports['fivepunch-multicharacter']
 
 function CreateState:init()
+    SetNuiFocus(false, false)
+    SendNUIMessage({ type = 'navigate', payload = '/' })
 end
 
 function CreateState:enter(params)

@@ -6,17 +6,20 @@ function SelectState:init()
     Multicharacter:onCharacterSelect(function(character)
         print('Character ' .. character.name .. ' selected!')
 
-        Multicharacter:flipTheBird(character, function()
-            Multicharacter:deleteCharacter(character)
+        Multicharacter:flipTheBird(character)
+        Multicharacter:deleteCharacter(character)
 
-            stopGTAOMulticharacter()
+        Multicharacter:setOutOfMulticharacter()
 
-            gFramework:onCharacterSelect(character)
-        end)
+        gFramework:onCharacterSelect(character)
+
+        stopGTAOMulticharacter()
     end)
 end
 
 function SelectState:enter(params)
+    SetNuiFocus(true, true)
+    SetNuiFocusKeepInput(true)
     SendNUIMessage({ type = 'navigate', payload = '/select' })
 end
 
@@ -24,4 +27,6 @@ function SelectState:update()
 end
 
 function SelectState:exit()
+    SetNuiFocus(false, false)
+    SetNuiFocusKeepInput(false)
 end

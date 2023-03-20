@@ -27,6 +27,8 @@ local function OnUICreateCharacter(data, cb)
     end
 
     gFramework:onCharacterCreate(data)
+
+    cb(true)
 end
 
 local function OnUIPreviousCharacters(_, cb)
@@ -76,10 +78,7 @@ function stopGTAOMulticharacter()
 
     if gFramework then
         gFramework:destroy()
-        gFramework = nil
     end
-
-    Multicharacter:setOutOfMulticharacter()
 
     SetNuiFocus(false, false)
     SendNUIMessage({ type = 'navigate', payload = '/' })
@@ -89,6 +88,8 @@ AddEventHandler('onResourceStop', function(resourceName)
     if resourceName ~= GetCurrentResourceName() then return end
 
     stopGTAOMulticharacter()
+
+    Multicharacter:setOutOfMulticharacter()
 end)
 
 CreateThread(function()

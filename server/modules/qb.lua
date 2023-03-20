@@ -105,6 +105,10 @@ function QBServer:init()
         loadHouses(src)
 
         TriggerClientEvent('apartments:client:setupSpawnUI', src, character)
+
+        -- TriggerClientEvent('qb-spawn:client:setupSpawns', src, character, true, gConfig.apartments)
+        -- TriggerClientEvent('qb-spawn:client:openUI', src, true)
+
         TriggerEvent("qb-log:server:CreateLog", "joinleave", "Loaded", "green",
             "**" ..
             GetPlayerName(src) ..
@@ -134,9 +138,8 @@ function QBServer:init()
         cb(true)
     end)
 
-    RegisterNetEvent('gtao-multicharacter:server:characterCreationCompleted', function()
+    RegisterNetEvent('gtao-multicharacter:server:logoutFromCharacter', function()
         local src = source
-
         QBCore.Player.Logout(src)
     end)
 

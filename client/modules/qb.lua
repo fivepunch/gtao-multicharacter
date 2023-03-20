@@ -5,9 +5,9 @@ QBClient = Class {}
 function QBClient:init()
     QBCore = exports['qb-core']:GetCoreObject()
 
-    TriggerEvent('qb-weathersync:client:DisableSync')
-
     self.cachedCharacters = {}
+
+    TriggerEvent('qb-weathersync:client:DisableSync')
 end
 
 function QBClient:fetchAndCacheCharacters()
@@ -105,19 +105,20 @@ function QBClient:onCharacterCreate(character)
     local onMenuCloseEvent = nil
 
     onMenuCloseEvent = AddEventHandler('qb-clothing:client:onMenuClose', function()
-        if onMenuCloseEvent then
-            RemoveEventHandler(onMenuCloseEvent)
-        end
-
-        TriggerServerEvent('gtao-multicharacter:server:characterCreationCompleted')
+        RemoveEventHandler(onMenuCloseEvent)
 
         local onPlayerUnloadEvent = nil
 
-        RegisterNetEvent('QBCore:Client:OnPlayerUnload')
-        onPlayerUnloadEvent = AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+        onPlayerUnloadEvent = RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
             RemoveEventHandler(onPlayerUnloadEvent)
             gStateMachine:change('idle', { transition = false })
         end)
+
+        -- Weird delay
+        -- https://docs.qbcore.org/qbcore-documentation/qb-core/player-data#qbcore.player.logout
+        Citizen.Wait(200)
+
+        TriggerServerEvent('gtao-multicharacter:server:logoutFromCharacter')
     end)
 end
 
@@ -127,4 +128,6 @@ end
 
 function QBClient:destroy()
     TriggerEvent('qb-weathersync:client:EnableSync')
+
+    gFramework = nil
 end

@@ -7,16 +7,16 @@ if (!__IS_CFX_NUI) {
   window.game.mock('setResourceState', ({ state }: { state: ResourceState }) => {
     switch (state) {
       case ResourceState.IDLE:
-        window.game.fakeGameMessage('navigate', '/idle');
+        window.game.fakeGameMessage('navigate', '/selection');
         break;
       case ResourceState.SELECT:
-        window.game.fakeGameMessage('navigate', '/select');
-        break;
-      case ResourceState.CREATE:
-        window.game.fakeGameMessage('navigate', '/create');
+        window.game.fakeGameMessage('navigate', '/selection/select');
         break;
       case ResourceState.DELETE:
-        window.game.fakeGameMessage('navigate', '/delete');
+        window.game.fakeGameMessage('navigate', '/selection/delete');
+        break;
+      case ResourceState.CREATE:
+        window.game.fakeGameMessage('navigate', '/creation');
         break;
     }
   });

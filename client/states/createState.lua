@@ -11,7 +11,7 @@ function CreateState:enter(params)
     Multicharacter:setIntoCharacterCreation()
 
     SetNuiFocus(true, true)
-    SendNUIMessage({ type = 'navigate', payload = '/create' })
+    SendNUIMessage({ type = 'navigate', payload = '/creation' })
 end
 
 function CreateState:update()

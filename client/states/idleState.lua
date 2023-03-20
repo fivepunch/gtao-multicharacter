@@ -36,7 +36,7 @@ function IdleState:enter(params)
     
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(true)
-    SendNUIMessage({ type = 'navigate', payload = '/idle' })
+    SendNUIMessage({ type = 'navigate', payload = '/selection' })
 end
 
 function IdleState:update()

@@ -16,7 +16,7 @@ end
 function DeleteState:enter(params)
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(true)
-    SendNUIMessage({ type = 'navigate', payload = '/delete' })
+    SendNUIMessage({ type = 'navigate', payload = '/selection/delete' })
 end
 
 function DeleteState:update()

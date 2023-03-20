@@ -20,7 +20,7 @@ end
 function SelectState:enter(params)
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(true)
-    SendNUIMessage({ type = 'navigate', payload = '/select' })
+    SendNUIMessage({ type = 'navigate', payload = '/selection/select' })
 end
 
 function SelectState:update()

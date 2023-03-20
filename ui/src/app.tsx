@@ -4,9 +4,9 @@ import './global.css';
 
 import { Root } from '@/components/Root';
 
-import { Idle } from '@/components/Idle';
+import { Selection } from '@/components/Selection';
 import { Select } from '@/components/Select';
-import { Create } from '@/components/Create';
+import { Creation } from '@/components/Creation';
 import { Delete } from '@/components/Delete';
 
 const router = createHashRouter([
@@ -15,20 +15,22 @@ const router = createHashRouter([
     element: <Root />,
     children: [
       {
-        path: '/idle',
-        element: <Idle />,
+        path: 'selection',
+        element: <Selection />,
+        children: [
+          {
+            path: 'select',
+            element: <Select />,
+          },
+          {
+            path: 'delete',
+            element: <Delete />,
+          },
+        ],
       },
       {
-        path: 'select',
-        element: <Select />,
-      },
-      {
-        path: 'create',
-        element: <Create />,
-      },
-      {
-        path: 'delete',
-        element: <Delete />,
+        path: 'creation',
+        element: <Creation />,
       },
     ],
   },

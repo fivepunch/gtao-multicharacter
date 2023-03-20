@@ -32,7 +32,7 @@ if (!__IS_CFX_NUI) {
   ]);
 }
 
-export function Create() {
+export function Creation() {
   const [formStructure, setFormStructure] = useState<FormInput[]>([]);
 
   useEffect(() => {

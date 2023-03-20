@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 
 import { FormInput } from '@/types/form';
@@ -54,18 +55,24 @@ export function Create() {
   }
 
   return (
-    <div className="h-screen w-full max-w-[1920px]">
-      <div
-        className="h-full w-96 absolute right-0 p-8 bg-gradient-to-l from-black to-black/20"
-        onClick={() =>
-          window.game.emit('setResourceState', { state: ResourceState.IDLE, parameters: { transition: false } })
-        }
+    <div className="h-screen w-full max-w-[1920px] relative overflow-hidden">
+      <motion.div
+        className="h-full w-96 absolute p-8 bg-gradient-to-l from-black to-black/20"
+        initial={{ right: '-24rem' }}
+        animate={{ right: '0rem' }}
+        transition={{ duration: 0.8 }}
       >
-        <button type="button" className="text-white font-medium inline-flex items-center">
+        <button
+          type="button"
+          className="text-white font-medium inline-flex items-center"
+          onClick={() =>
+            window.game.emit('setResourceState', { state: ResourceState.IDLE, parameters: { transition: false } })
+          }
+        >
           <ChevronLeftIcon className="h-4 w-4 mr-4" />
           Return to selection
         </button>
-        <h1 className="w-full inline-flex justify-center items-center gap-2 text-white font-bold text-2xl uppercase mt-10">
+        <h1 className="w-full inline-flex items-center gap-2 text-white font-bold text-2xl uppercase mt-14">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +91,7 @@ export function Create() {
               <line x1="22" y1="11" x2="16" y2="11"></line>
             </svg>
           </span>
-          Create character
+          <span className="inline-flex flex-grow justify-center">Create character</span>
         </h1>
         <form className="flex flex-col gap-4 text-white mt-8" onSubmit={handleSubmit}>
           {formStructure.map(input => (
@@ -94,7 +101,7 @@ export function Create() {
             Create
           </Button>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 interface ArrowsProps {
   onLeftArrowClick?: () => void;
   onRightArrowClick?: () => void;
@@ -5,7 +7,12 @@ interface ArrowsProps {
 
 export function Arrows({ onLeftArrowClick, onRightArrowClick }: ArrowsProps) {
   return (
-    <div className="w-full flex justify-between absolute px-24 top-1/2 -translate-y-1/2">
+    <motion.div
+      className="w-full flex justify-between absolute px-24 top-1/2 -translate-y-1/2"
+      initial={{ left: '-10%', width: '120%' }}
+      animate={{ left: '0', width: '100%' }}
+      transition={{ duration: 0.8 }}
+    >
       <button
         type="button"
         className="transition-all opacity-75 hover:opacity-100"
@@ -50,6 +57,6 @@ export function Arrows({ onLeftArrowClick, onRightArrowClick }: ArrowsProps) {
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
       </button>
-    </div>
+    </motion.div>
   );
 }

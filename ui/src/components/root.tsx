@@ -4,7 +4,7 @@ import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { ResourceState } from '@/types/states';
 
 if (!__IS_CFX_NUI) {
-  window.game.mock('setResourceState', (state: ResourceState) => {
+  window.game.mock('setResourceState', ({ state }: { state: ResourceState }) => {
     switch (state) {
       case ResourceState.IDLE:
         window.game.fakeGameMessage('navigate', '/idle');

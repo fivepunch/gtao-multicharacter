@@ -355,9 +355,7 @@ function ESXClient:init()
     RegisterNetEvent('esx:playerLoaded')
     AddEventHandler('esx:playerLoaded', function(playerData, isNew, skin)
         if isNew then
-            SendNUIMessage({ type = 'navigate', payload = '/' })
             SetNuiFocus(false, false)
-
             TriggerEvent('skinchanger:loadSkin', skin, function()
                 TriggerEvent('esx_skin:openSaveableMenu', function()
                     TriggerServerEvent('esx_multicharacter:relog')
@@ -373,10 +371,10 @@ function ESXClient:init()
         local playerPed = PlayerPedId()
         local spawnCoords = playerData.coords or vector4(428.23, -984.28, 29.76, 3.5)
 
-        TriggerEvent('skinchanger:loadSkin', skin)
-
-        SetEntityCoordsNoOffset(playerPed, spawnCoords.xyz, false, false, false) ---@diagnostic disable-line
+        SetEntityCoordsNoOffset(playerPed, spawnCoords.x, spawnCoords.y, spawnCoords.z, false, false, false)
         SetEntityHeading(playerPed, spawnCoords.w)
+
+        TriggerEvent('skinchanger:loadSkin', skin)
 
         TriggerServerEvent('esx:onPlayerSpawn')
         TriggerEvent('esx:onPlayerSpawn')
@@ -457,27 +455,8 @@ function ESXClient:getCharacters()
 end
 
 function ESXClient:getCreateCharacterFormStructure()
-    return {
-        {
-            type = 'text',
-            name = 'firstname',
-            label = 'First name',
-        },
-        {
-            type = 'text',
-            name = 'lastname',
-            label = 'Last name',
-        },
-        {
-            type = 'select',
-            name = 'gender',
-            label = 'Gender',
-            options = {
-                { value = 0, label = 'Male' },
-                { value = 1, label = 'Female' },
-            },
-        }
-    }
+    -- By returning an empty table, the UI will ignore the creation form and trigger the onCharacterCreate method immediately
+    return {}
 end
 
 function ESXClient:onCharacterSpawn(character)
@@ -497,6 +476,8 @@ function ESXClient:onCharacterCreate(character)
             break
         end
     end
+
+    SendNUIMessage({ type = 'navigate', payload = '/' })
 
     TriggerServerEvent('esx_multicharacter:CharacterChosen', slot, true)
     TriggerEvent('esx_identity:showRegisterIdentity')

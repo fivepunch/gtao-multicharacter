@@ -40,6 +40,10 @@ export function Creation() {
       const structure = await window.game.emit<FormInput[]>('getCreateCharacterFormStructure');
       if (!structure) return;
 
+      if (structure.length === 0) {
+        return window.game.emit('createCharacter');
+      }
+
       setFormStructure(structure);
     })();
   }, []);

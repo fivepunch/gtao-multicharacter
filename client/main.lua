@@ -66,8 +66,8 @@ function stopGTAOMulticharacter()
         gStateMachine = nil
     end
 
-    SetNuiFocus(false, false)
     SendNUIMessage({ type = 'navigate', payload = '/' })
+    SetNuiFocus(false, false)
 end
 
 AddEventHandler('onResourceStop', function(resourceName)

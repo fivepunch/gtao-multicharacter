@@ -39,8 +39,6 @@ export function Root() {
 
   useEffect(() => {
     const disposeNavigateEvent = window.game.addEventListener('navigate', (path: string) => {
-      console.log(`Navigating to path: ${path}`);
-
       navigate(path);
     });
 

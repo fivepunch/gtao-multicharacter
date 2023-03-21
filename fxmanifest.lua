@@ -19,15 +19,14 @@ client_scripts {
     'client/states/createState.lua',
     'client/states/selectState.lua',
     'client/states/deleteState.lua',
-    'client/modules/standalone.lua',
-    'client/modules/qb.lua',
+    'client/modules/*.lua',
     'client/main.lua'
 }
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
     'lib/class.lua',
-    'server/modules/qb.lua',
+    'server/modules/*.lua',
     'server/main.lua'
 }
 

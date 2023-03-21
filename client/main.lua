@@ -52,13 +52,11 @@ function startGTAOMulticharacter(framework)
         gFramework = QBClient()
     end
 
-    -- if isESX() then
-    --     gFramework = ESXClient()
-    -- end
+    if isESX() then
+        gFramework = ESXClient()
+    end
 
-    -- if isVRP() then
-    --     gFramework = VRPClient()
-    -- end
+    if not gFramework then return end
 
     gStateMachine = StateMachine({
         ['idle'] = function() return IdleState() end,

@@ -13,5 +13,5 @@ function isVRP()
 end
 
 function isESX()
-    return hasResource('esx')
+    return hasResource('es_extended')
 end

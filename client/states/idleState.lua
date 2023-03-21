@@ -33,7 +33,7 @@ function IdleState:enter(params)
             drawCursorSprite = false,
         })
     end
-    
+
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(true)
     SendNUIMessage({ type = 'navigate', payload = '/selection' })

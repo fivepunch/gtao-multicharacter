@@ -18,4 +18,4 @@ Check the documentation to explore all your possibilities.
 
 ## License
 
-This project is under MIT license. See the file [LICENSE](./LICENSE) for more details.
+This project uses a custom license. See the file [LICENSE](./LICENSE) for more details.

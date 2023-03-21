@@ -64,6 +64,18 @@ end
 function QBServer:init()
     QBCore = exports['qb-core']:GetCoreObject()
 
+    self.hasDonePreloading = {}
+
+    -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#LL75-L82C5
+    self.onPlayerLoadedEvent = AddEventHandler('QBCore:Server:PlayerLoaded', function(Player)
+        Citizen.Wait(1000) -- 1 second should be enough to do the preloading in other resources
+        self.hasDonePreloading[Player.PlayerData.source] = true
+    end)
+
+    self.onPlayerUnloadedEvent = AddEventHandler('QBCore:Server:OnPlayerUnload', function(src)
+        self.hasDonePreloading[src] = false
+    end)
+
     QBCore.Functions.CreateCallback("gtao-multicharacter:server:getCharacters", function(source, cb)
         local license = QBCore.Functions.GetIdentifier(source, 'license')
 
@@ -92,33 +104,36 @@ function QBServer:init()
     end)
 
     -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#L89
-    RegisterNetEvent('gtao-multicharacter:server:loadCharacter', function(character)
+    self.onLoadCharacterEvent = RegisterNetEvent('gtao-multicharacter:server:loadCharacter', function(character)
         local src = source
 
         if not QBCore.Player.Login(src, character.citizenid) then return end
 
-        print('^2[qb-core]^7 ' ..
-            GetPlayerName(src) .. ' (Citizen ID: ' .. character.citizenid .. ') has succesfully loaded!')
+        Citizen.CreateThread(function()
+            while not self.hasDonePreloading[src] do
+                Citizen.Wait(1000)
+            end
 
-        QBCore.Commands.Refresh(src)
+            print('^2[qb-core]^7 ' ..
+                GetPlayerName(src) .. ' (Citizen ID: ' .. character.citizenid .. ') has succesfully loaded!')
 
-        loadHouses(src)
+            QBCore.Commands.Refresh(src)
 
-        TriggerClientEvent('apartments:client:setupSpawnUI', src, character)
+            loadHouses(src)
 
-        -- TriggerClientEvent('qb-spawn:client:setupSpawns', src, character, true, gConfig.apartments)
-        -- TriggerClientEvent('qb-spawn:client:openUI', src, true)
+            TriggerClientEvent('apartments:client:setupSpawnUI', src, character)
 
-        TriggerEvent("qb-log:server:CreateLog", "joinleave", "Loaded", "green",
-            "**" ..
-            GetPlayerName(src) ..
-            "** (<@" ..
-            (QBCore.Functions.GetIdentifier(src, 'discord'):gsub("discord:", "") or "unknown") ..
-            "> |  ||" ..
-            (QBCore.Functions.GetIdentifier(src, 'ip') or 'undefined') ..
-            "|| | " ..
-            (QBCore.Functions.GetIdentifier(src, 'license') or 'undefined') ..
-            " | " .. character.citizenid .. " | " .. src .. ") loaded..")
+            TriggerEvent("qb-log:server:CreateLog", "joinleave", "Loaded", "green",
+                "**" ..
+                GetPlayerName(src) ..
+                "** (<@" ..
+                (QBCore.Functions.GetIdentifier(src, 'discord'):gsub("discord:", "") or "unknown") ..
+                "> |  ||" ..
+                (QBCore.Functions.GetIdentifier(src, 'ip') or 'undefined') ..
+                "|| | " ..
+                (QBCore.Functions.GetIdentifier(src, 'license') or 'undefined') ..
+                " | " .. character.citizenid .. " | " .. src .. ") loaded..")
+        end)
     end)
 
     -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#L103
@@ -138,14 +153,24 @@ function QBServer:init()
         cb(true)
     end)
 
-    RegisterNetEvent('gtao-multicharacter:server:logoutFromCharacter', function()
+    self.onLogoutFromCharacterEvent = RegisterNetEvent('gtao-multicharacter:server:logoutFromCharacter', function()
         local src = source
         QBCore.Player.Logout(src)
     end)
 
     -- https://github.com/qbcore-framework/qb-multicharacter/blob/e76183ad3ee6440610e498c7b7edffb4f8ca7c89/server/main.lua#LL131-L135C5
-    RegisterNetEvent('gtao-multicharacter:server:deleteCharacter', function(citizenid)
+    self.onDeleteCharacterEvent = RegisterNetEvent('gtao-multicharacter:server:deleteCharacter', function(citizenid)
         local src = source
         QBCore.Player.DeleteCharacter(src, citizenid)
     end)
+end
+
+function QBServer:destroy()
+    RemoveEventHandler(self.onPlayerLoadedEvent)
+    RemoveEventHandler(self.onPlayerUnloadedEvent)
+    RemoveEventHandler(self.onLoadCharacterEvent)
+    RemoveEventHandler(self.onLogoutFromCharacterEvent)
+    RemoveEventHandler(self.onDeleteCharacterEvent)
+
+    self.hasDonePreloading = nil
 end

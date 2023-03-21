@@ -8,6 +8,9 @@ function QBClient:init()
     self.cachedCharacters = {}
 
     TriggerEvent('qb-weathersync:client:DisableSync')
+
+    -- Ensure that the player is not logged in
+    TriggerServerEvent('gtao-multicharacter:server:logoutFromCharacter')
 end
 
 function QBClient:fetchAndCacheCharacters()
@@ -114,7 +117,7 @@ function QBClient:onCharacterCreate(character)
             gStateMachine:change('idle', { transition = false })
         end)
 
-        -- Weird delay
+        -- Delay :P
         -- https://docs.qbcore.org/qbcore-documentation/qb-core/player-data#qbcore.player.logout
         Citizen.Wait(200)
 
@@ -128,6 +131,8 @@ end
 
 function QBClient:destroy()
     TriggerEvent('qb-weathersync:client:EnableSync')
+
+    DoScreenFadeOut(0)
 
     gFramework = nil
 end

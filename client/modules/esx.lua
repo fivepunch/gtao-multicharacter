@@ -357,7 +357,12 @@ function ESXClient:init()
         if isNew then
             SetNuiFocus(false, false)
             TriggerEvent('skinchanger:loadSkin', skin, function()
+                local player = PlayerId()
+
+                SetPlayerControl(player, true, 0)
+
                 TriggerEvent('esx_skin:openSaveableMenu', function()
+                    SetPlayerControl(player, false, 0)
                     TriggerServerEvent('esx_multicharacter:relog')
                     gStateMachine:change('idle', { transition = false })
                 end)

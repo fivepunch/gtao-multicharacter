@@ -207,8 +207,7 @@ local function getCharacterModel(character)
     return character.skin.sex == 1 and 'mp_f_freemode_01' or 'mp_m_freemode_01'
 end
 
-
--- By ESX standards, you should only apply the skin in your own playerPed. So we need a small workaround :P
+-- By ESX standards, you should only applying skin to your own playerPed. So we need a small workaround :P
 -- https://github.com/esx-framework/esx_core/blob/85b340794ca0940bc99fc7d8f948fef0461e4857/%5Bcore%5D/skinchanger/client/main.lua#L149
 local function setPedSkin(ped, skin)
     local characterSkin = {}
@@ -369,25 +368,27 @@ function ESXClient:init()
         TriggerEvent('esx:restoreLoadout')
     end)
 
-    while not ESX.PlayerLoaded do
-        Citizen.Wait(100)
+    Citizen.CreateThread(function()
+        while not ESX.PlayerLoaded do
+            Citizen.Wait(100)
 
-        if NetworkIsPlayerActive(PlayerId()) then
-            ShutdownLoadingScreen()
-            ShutdownLoadingScreenNui()
-            TriggerEvent('esx:loadingScreenOff')
-            DoScreenFadeIn(0)
-            exports.spawnmanager:spawnPlayer({
-                x = 0.0,
-                y = 0.0,
-                z = 0.0,
-                heading = 0.0,
-                model = 'player_zero',
-                skipFade = true
-            })
-            break
+            if NetworkIsPlayerActive(PlayerId()) then
+                ShutdownLoadingScreen()
+                ShutdownLoadingScreenNui()
+                TriggerEvent('esx:loadingScreenOff')
+                exports.spawnmanager:spawnPlayer({
+                    x = 0.0,
+                    y = 0.0,
+                    z = 0.0,
+                    heading = 0.0,
+                    model = 'player_zero',
+                    skipFade = true
+                })
+                startGTAOMulticharacter()
+                break
+            end
         end
-    end
+    end)
 end
 
 function ESXClient:fetchAndCacheCharacters()
@@ -470,5 +471,7 @@ function ESXClient:onCharacterDelete(character)
 end
 
 function ESXClient:destroy()
+    stopGTAOMulticharacter()
+
     gFramework = nil
 end

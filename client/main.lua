@@ -47,15 +47,7 @@ local function OnUINextCharacters(_, cb)
     Multicharacter:nextPage()
 end
 
-function startGTAOMulticharacter(framework)
-    if isQBCore() then
-        gFramework = QBClient()
-    end
-
-    if isESX() then
-        gFramework = ESXClient()
-    end
-
+function startGTAOMulticharacter()
     if not gFramework then return end
 
     gStateMachine = StateMachine({
@@ -74,10 +66,6 @@ function stopGTAOMulticharacter()
         gStateMachine = nil
     end
 
-    if gFramework then
-        gFramework:destroy()
-    end
-
     SetNuiFocus(false, false)
     SendNUIMessage({ type = 'navigate', payload = '/' })
 end
@@ -85,7 +73,7 @@ end
 AddEventHandler('onResourceStop', function(resourceName)
     if resourceName ~= GetCurrentResourceName() then return end
 
-    stopGTAOMulticharacter()
+    gFramework:destroy()
 
     Multicharacter:setOutOfMulticharacter()
 end)
@@ -97,10 +85,11 @@ CreateThread(function()
     RegisterNUICallback('previousCharacters', OnUIPreviousCharacters)
     RegisterNUICallback('nextCharacters', OnUINextCharacters)
 
-    while true do
-        Wait(0)
-        if NetworkIsSessionStarted() then
-            return startGTAOMulticharacter()
-        end
+    if isQBCore() then
+        gFramework = QBClient()
+    end
+
+    if isESX() then
+        gFramework = ESXClient()
     end
 end)

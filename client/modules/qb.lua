@@ -11,6 +11,15 @@ function QBClient:init()
 
     -- Ensure that the player is not logged in
     TriggerServerEvent('gtao-multicharacter:server:logoutFromCharacter')
+
+    Citizen.CreateThread(function()
+        while true do
+            Wait(0)
+            if NetworkIsSessionStarted() then
+                return startGTAOMulticharacter()
+            end
+        end
+    end)
 end
 
 function QBClient:fetchAndCacheCharacters()
@@ -131,8 +140,9 @@ end
 
 function QBClient:destroy()
     TriggerEvent('qb-weathersync:client:EnableSync')
-
     DoScreenFadeOut(0)
+
+    stopGTAOMulticharacter()
 
     gFramework = nil
 end

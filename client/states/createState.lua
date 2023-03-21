@@ -18,5 +18,6 @@ function CreateState:update()
 end
 
 function CreateState:exit()
+    Multicharacter:setOutOfMulticharacter()
     SetNuiFocus(false, false)
 end

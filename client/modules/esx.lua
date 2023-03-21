@@ -1,3 +1,4 @@
+local DEFAULT_SPAWN_COORDS = vector4(428.23, -984.28, 29.76, 3.5)
 local DEFAULT_ESX_SKIN = {
     ["m"] = {
         mom = 43,
@@ -363,8 +364,21 @@ function ESXClient:init()
 
                 TriggerEvent('esx_skin:openSaveableMenu', function()
                     SetPlayerControl(player, false, 0)
+
+                    local playerPed = PlayerPedId()
+
+                    -- Messy but we need to wait for the new character position to be persisted,
+                    -- otherwise he would spawn in the mugshot room
+                    stopGTAOMulticharacter()
+
+                    DoScreenFadeOut(0)
+                    SetEntityCoordsNoOffset(playerPed, DEFAULT_SPAWN_COORDS.x, DEFAULT_SPAWN_COORDS.y,
+                        DEFAULT_SPAWN_COORDS.z, false, false, false)
+                    SetEntityHeading(playerPed, DEFAULT_SPAWN_COORDS.w)
+
+                    Citizen.Wait(1000)
+
                     TriggerServerEvent('esx_multicharacter:relog')
-                    gStateMachine:change('idle', { transition = false })
                 end)
 
                 SetEntityHeading(PlayerPedId(), 180.0)
@@ -374,7 +388,7 @@ function ESXClient:init()
         end
 
         local playerPed = PlayerPedId()
-        local spawnCoords = playerData.coords or vector4(428.23, -984.28, 29.76, 3.5)
+        local spawnCoords = playerData.coords or DEFAULT_SPAWN_COORDS
 
         SetEntityCoordsNoOffset(playerPed, spawnCoords.x, spawnCoords.y, spawnCoords.z, false, false, false)
         SetEntityHeading(playerPed, spawnCoords.w)

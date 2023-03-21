@@ -4,8 +4,6 @@ local Multicharacter = exports['fivepunch-multicharacter']
 
 function SelectState:init()
     Multicharacter:onCharacterSelect(function(character)
-        print('Character ' .. character.name .. ' selected!')
-
         Multicharacter:flipTheBird(character)
         Multicharacter:deleteCharacter(character)
 

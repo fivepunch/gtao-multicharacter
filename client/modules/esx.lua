@@ -210,139 +210,142 @@ end
 -- By ESX standards, you should only applying skin to your own playerPed. So we need a small workaround :P
 -- https://github.com/esx-framework/esx_core/blob/85b340794ca0940bc99fc7d8f948fef0461e4857/%5Bcore%5D/skinchanger/client/main.lua#L149
 local function setPedSkin(ped, skin)
-    local characterSkin = {}
+    -- If there's an error simply don't apply
+    pcall(function()
+        local characterSkin = {}
 
-    for k, v in pairs(skin) do
-        characterSkin[k] = v
-    end
-
-    if skin ~= nil then
         for k, v in pairs(skin) do
-            if k ~= 'sex' and k ~= 'mom' and k ~= 'dad' and k ~= 'face_md_weight' and k ~= 'skin_md_weight' and k ~=
-                'nose_1' and k ~= 'nose_2' and k ~= 'nose_3' and k ~= 'nose_4' and k ~= 'nose_5' and k ~= 'nose_6' and k ~=
-                'cheeks_1' and k ~= 'cheeks_2' and k ~= 'cheeks_3' and k ~= 'lip_thickness' and k ~= 'jaw_1' and k ~=
-                'jaw_2' and k ~= 'chin_1' and k ~= 'chin_2' and k ~= 'chin_3' and k ~= 'chin_4' and k ~=
-                'neck_thickness' and k ~= 'age_1' and k ~= 'age_2' and k ~= 'eye_color' and k ~= 'eye_squint' and k ~=
-                'beard_1' and k ~= 'beard_2' and k ~= 'beard_3' and k ~= 'beard_4' and k ~= 'hair_1' and k ~= 'hair_2' and
-                k ~= 'hair_color_1' and k ~= 'hair_color_2' and k ~= 'eyebrows_1' and k ~= 'eyebrows_2' and k ~=
-                'eyebrows_3' and k ~= 'eyebrows_4' and k ~= 'eyebrows_5' and k ~= 'eyebrows_6' and k ~= 'makeup_1' and k ~=
-                'makeup_2' and k ~= 'makeup_3' and k ~= 'makeup_4' and k ~= 'lipstick_1' and k ~= 'lipstick_2' and k ~=
-                'lipstick_3' and k ~= 'lipstick_4' and k ~= 'blemishes_1' and k ~= 'blemishes_2' and k ~= 'blemishes_3' and
-                k ~= 'blush_1' and k ~= 'blush_2' and k ~= 'blush_3' and k ~= 'complexion_1' and k ~= 'complexion_2' and
-                k ~= 'sun_1' and k ~= 'sun_2' and k ~= 'moles_1' and k ~= 'moles_2' and k ~= 'chest_1' and k ~=
-                'chest_2' and k ~= 'chest_3' and k ~= 'bodyb_1' and k ~= 'bodyb_2' and k ~= 'bodyb_3' and k ~= 'bodyb_4' then
-                characterSkin[k] = v
+            characterSkin[k] = v
+        end
+
+        if skin ~= nil then
+            for k, v in pairs(skin) do
+                if k ~= 'sex' and k ~= 'mom' and k ~= 'dad' and k ~= 'face_md_weight' and k ~= 'skin_md_weight' and k ~=
+                    'nose_1' and k ~= 'nose_2' and k ~= 'nose_3' and k ~= 'nose_4' and k ~= 'nose_5' and k ~= 'nose_6' and k ~=
+                    'cheeks_1' and k ~= 'cheeks_2' and k ~= 'cheeks_3' and k ~= 'lip_thickness' and k ~= 'jaw_1' and k ~=
+                    'jaw_2' and k ~= 'chin_1' and k ~= 'chin_2' and k ~= 'chin_3' and k ~= 'chin_4' and k ~=
+                    'neck_thickness' and k ~= 'age_1' and k ~= 'age_2' and k ~= 'eye_color' and k ~= 'eye_squint' and k ~=
+                    'beard_1' and k ~= 'beard_2' and k ~= 'beard_3' and k ~= 'beard_4' and k ~= 'hair_1' and k ~= 'hair_2' and
+                    k ~= 'hair_color_1' and k ~= 'hair_color_2' and k ~= 'eyebrows_1' and k ~= 'eyebrows_2' and k ~=
+                    'eyebrows_3' and k ~= 'eyebrows_4' and k ~= 'eyebrows_5' and k ~= 'eyebrows_6' and k ~= 'makeup_1' and k ~=
+                    'makeup_2' and k ~= 'makeup_3' and k ~= 'makeup_4' and k ~= 'lipstick_1' and k ~= 'lipstick_2' and k ~=
+                    'lipstick_3' and k ~= 'lipstick_4' and k ~= 'blemishes_1' and k ~= 'blemishes_2' and k ~= 'blemishes_3' and
+                    k ~= 'blush_1' and k ~= 'blush_2' and k ~= 'blush_3' and k ~= 'complexion_1' and k ~= 'complexion_2' and
+                    k ~= 'sun_1' and k ~= 'sun_2' and k ~= 'moles_1' and k ~= 'moles_2' and k ~= 'chest_1' and k ~=
+                    'chest_2' and k ~= 'chest_3' and k ~= 'bodyb_1' and k ~= 'bodyb_2' and k ~= 'bodyb_3' and k ~= 'bodyb_4' then
+                    characterSkin[k] = v
+                end
             end
         end
-    end
 
-    local face_weight = (characterSkin['face_md_weight'] / 100) + 0.0
-    local skin_weight = (characterSkin['skin_md_weight'] / 100) + 0.0
-    SetPedHeadBlendData(ped, characterSkin['mom'], characterSkin['dad'], 0, characterSkin['mom'],
-        characterSkin['dad'], 0,
-        face_weight, skin_weight, 0.0, false)
+        local face_weight = (characterSkin['face_md_weight'] / 100) + 0.0
+        local skin_weight = (characterSkin['skin_md_weight'] / 100) + 0.0
+        SetPedHeadBlendData(ped, characterSkin['mom'], characterSkin['dad'], 0, characterSkin['mom'],
+            characterSkin['dad'], 0,
+            face_weight, skin_weight, 0.0, false)
 
-    SetPedFaceFeature(ped, 0, (characterSkin['nose_1'] / 10) + 0.0)                                      -- Nose Width
-    SetPedFaceFeature(ped, 1, (characterSkin['nose_2'] / 10) + 0.0)                                      -- Nose Peak Height
-    SetPedFaceFeature(ped, 2, (characterSkin['nose_3'] / 10) + 0.0)                                      -- Nose Peak Length
-    SetPedFaceFeature(ped, 3, (characterSkin['nose_4'] / 10) + 0.0)                                      -- Nose Bone Height
-    SetPedFaceFeature(ped, 4, (characterSkin['nose_5'] / 10) + 0.0)                                      -- Nose Peak Lowering
-    SetPedFaceFeature(ped, 5, (characterSkin['nose_6'] / 10) + 0.0)                                      -- Nose Bone Twist
-    SetPedFaceFeature(ped, 6, (characterSkin['eyebrows_5'] / 10) + 0.0)                                  -- Eyebrow height
-    SetPedFaceFeature(ped, 7, (characterSkin['eyebrows_6'] / 10) + 0.0)                                  -- Eyebrow depth
-    SetPedFaceFeature(ped, 8, (characterSkin['cheeks_1'] / 10) + 0.0)                                    -- Cheekbones Height
-    SetPedFaceFeature(ped, 9, (characterSkin['cheeks_2'] / 10) + 0.0)                                    -- Cheekbones Width
-    SetPedFaceFeature(ped, 10, (characterSkin['cheeks_3'] / 10) + 0.0)                                   -- Cheeks Width
-    SetPedFaceFeature(ped, 11, (characterSkin['eye_squint'] / 10) + 0.0)                                 -- Eyes squint
-    SetPedFaceFeature(ped, 12, (characterSkin['lip_thickness'] / 10) + 0.0)                              -- Lip Fullness
-    SetPedFaceFeature(ped, 13, (characterSkin['jaw_1'] / 10) + 0.0)                                      -- Jaw Bone Width
-    SetPedFaceFeature(ped, 14, (characterSkin['jaw_2'] / 10) + 0.0)                                      -- Jaw Bone Length
-    SetPedFaceFeature(ped, 15, (characterSkin['chin_1'] / 10) + 0.0)                                     -- Chin Height
-    SetPedFaceFeature(ped, 16, (characterSkin['chin_2'] / 10) + 0.0)                                     -- Chin Length
-    SetPedFaceFeature(ped, 17, (characterSkin['chin_3'] / 10) + 0.0)                                     -- Chin Width
-    SetPedFaceFeature(ped, 18, (characterSkin['chin_4'] / 10) + 0.0)                                     -- Chin Hole Size
-    SetPedFaceFeature(ped, 19, (characterSkin['neck_thickness'] / 10) + 0.0)                             -- Neck Thickness
+        SetPedFaceFeature(ped, 0, (characterSkin['nose_1'] / 10) + 0.0)                                      -- Nose Width
+        SetPedFaceFeature(ped, 1, (characterSkin['nose_2'] / 10) + 0.0)                                      -- Nose Peak Height
+        SetPedFaceFeature(ped, 2, (characterSkin['nose_3'] / 10) + 0.0)                                      -- Nose Peak Length
+        SetPedFaceFeature(ped, 3, (characterSkin['nose_4'] / 10) + 0.0)                                      -- Nose Bone Height
+        SetPedFaceFeature(ped, 4, (characterSkin['nose_5'] / 10) + 0.0)                                      -- Nose Peak Lowering
+        SetPedFaceFeature(ped, 5, (characterSkin['nose_6'] / 10) + 0.0)                                      -- Nose Bone Twist
+        SetPedFaceFeature(ped, 6, (characterSkin['eyebrows_5'] / 10) + 0.0)                                  -- Eyebrow height
+        SetPedFaceFeature(ped, 7, (characterSkin['eyebrows_6'] / 10) + 0.0)                                  -- Eyebrow depth
+        SetPedFaceFeature(ped, 8, (characterSkin['cheeks_1'] / 10) + 0.0)                                    -- Cheekbones Height
+        SetPedFaceFeature(ped, 9, (characterSkin['cheeks_2'] / 10) + 0.0)                                    -- Cheekbones Width
+        SetPedFaceFeature(ped, 10, (characterSkin['cheeks_3'] / 10) + 0.0)                                   -- Cheeks Width
+        SetPedFaceFeature(ped, 11, (characterSkin['eye_squint'] / 10) + 0.0)                                 -- Eyes squint
+        SetPedFaceFeature(ped, 12, (characterSkin['lip_thickness'] / 10) + 0.0)                              -- Lip Fullness
+        SetPedFaceFeature(ped, 13, (characterSkin['jaw_1'] / 10) + 0.0)                                      -- Jaw Bone Width
+        SetPedFaceFeature(ped, 14, (characterSkin['jaw_2'] / 10) + 0.0)                                      -- Jaw Bone Length
+        SetPedFaceFeature(ped, 15, (characterSkin['chin_1'] / 10) + 0.0)                                     -- Chin Height
+        SetPedFaceFeature(ped, 16, (characterSkin['chin_2'] / 10) + 0.0)                                     -- Chin Length
+        SetPedFaceFeature(ped, 17, (characterSkin['chin_3'] / 10) + 0.0)                                     -- Chin Width
+        SetPedFaceFeature(ped, 18, (characterSkin['chin_4'] / 10) + 0.0)                                     -- Chin Hole Size
+        SetPedFaceFeature(ped, 19, (characterSkin['neck_thickness'] / 10) + 0.0)                             -- Neck Thickness
 
-    SetPedHairColor(ped, characterSkin['hair_color_1'], characterSkin['hair_color_2'])                   -- Hair Color
-    SetPedHeadOverlay(ped, 3, characterSkin['age_1'], (characterSkin['age_2'] / 10) + 0.0)               -- Age + opacity
-    SetPedHeadOverlay(ped, 0, characterSkin['blemishes_1'], (characterSkin['blemishes_2'] / 10) + 0.0)   -- Blemishes + opacity
-    SetPedHeadOverlay(ped, 1, characterSkin['beard_1'], (characterSkin['beard_2'] / 10) + 0.0)           -- Beard + opacity
-    SetPedEyeColor(ped, characterSkin['eye_color'])                                                      -- Eyes color
-    SetPedHeadOverlay(ped, 2, characterSkin['eyebrows_1'], (characterSkin['eyebrows_2'] / 10) + 0.0)     -- Eyebrows + opacity
-    SetPedHeadOverlay(ped, 4, characterSkin['makeup_1'], (characterSkin['makeup_2'] / 10) + 0.0)         -- Makeup + opacity
-    SetPedHeadOverlay(ped, 8, characterSkin['lipstick_1'], (characterSkin['lipstick_2'] / 10) + 0.0)     -- Lipstick + opacity
-    SetPedComponentVariation(ped, 2, characterSkin['hair_1'], characterSkin['hair_2'], 2)                -- Hair
-    SetPedHeadOverlayColor(ped, 1, 1, characterSkin['beard_3'], characterSkin['beard_4'])                -- Beard Color
-    SetPedHeadOverlayColor(ped, 2, 1, characterSkin['eyebrows_3'], characterSkin['eyebrows_4'])          -- Eyebrows Color
-    SetPedHeadOverlayColor(ped, 4, 2, characterSkin['makeup_3'], characterSkin['makeup_4'])              -- Makeup Color
-    SetPedHeadOverlayColor(ped, 8, 1, characterSkin['lipstick_3'], characterSkin['lipstick_4'])          -- Lipstick Color
-    SetPedHeadOverlay(ped, 5, characterSkin['blush_1'], (characterSkin['blush_2'] / 10) + 0.0)           -- Blush + opacity
-    SetPedHeadOverlayColor(ped, 5, 2, characterSkin['blush_3']) ---@diagnostic disable-line
-    SetPedHeadOverlay(ped, 6, characterSkin['complexion_1'], (characterSkin['complexion_2'] / 10) + 0.0) -- Complexion + opacity
-    SetPedHeadOverlay(ped, 7, characterSkin['sun_1'], (characterSkin['sun_2'] / 10) + 0.0)               -- Sun Damage + opacity
-    SetPedHeadOverlay(ped, 9, characterSkin['moles_1'], (characterSkin['moles_2'] / 10) + 0.0)           -- Moles/Freckles + opacity
-    SetPedHeadOverlay(ped, 10, characterSkin['chest_1'], (characterSkin['chest_2'] / 10) + 0.0)          -- Chest Hair + opacity
-    SetPedHeadOverlayColor(ped, 10, 1, characterSkin['chest_3']) ---@diagnostic disable-line
+        SetPedHairColor(ped, characterSkin['hair_color_1'], characterSkin['hair_color_2'])                   -- Hair Color
+        SetPedHeadOverlay(ped, 3, characterSkin['age_1'], (characterSkin['age_2'] / 10) + 0.0)               -- Age + opacity
+        SetPedHeadOverlay(ped, 0, characterSkin['blemishes_1'], (characterSkin['blemishes_2'] / 10) + 0.0)   -- Blemishes + opacity
+        SetPedHeadOverlay(ped, 1, characterSkin['beard_1'], (characterSkin['beard_2'] / 10) + 0.0)           -- Beard + opacity
+        SetPedEyeColor(ped, characterSkin['eye_color'])                                                      -- Eyes color
+        SetPedHeadOverlay(ped, 2, characterSkin['eyebrows_1'], (characterSkin['eyebrows_2'] / 10) + 0.0)     -- Eyebrows + opacity
+        SetPedHeadOverlay(ped, 4, characterSkin['makeup_1'], (characterSkin['makeup_2'] / 10) + 0.0)         -- Makeup + opacity
+        SetPedHeadOverlay(ped, 8, characterSkin['lipstick_1'], (characterSkin['lipstick_2'] / 10) + 0.0)     -- Lipstick + opacity
+        SetPedComponentVariation(ped, 2, characterSkin['hair_1'], characterSkin['hair_2'], 2)                -- Hair
+        SetPedHeadOverlayColor(ped, 1, 1, characterSkin['beard_3'], characterSkin['beard_4'])                -- Beard Color
+        SetPedHeadOverlayColor(ped, 2, 1, characterSkin['eyebrows_3'], characterSkin['eyebrows_4'])          -- Eyebrows Color
+        SetPedHeadOverlayColor(ped, 4, 2, characterSkin['makeup_3'], characterSkin['makeup_4'])              -- Makeup Color
+        SetPedHeadOverlayColor(ped, 8, 1, characterSkin['lipstick_3'], characterSkin['lipstick_4'])          -- Lipstick Color
+        SetPedHeadOverlay(ped, 5, characterSkin['blush_1'], (characterSkin['blush_2'] / 10) + 0.0)           -- Blush + opacity
+        SetPedHeadOverlayColor(ped, 5, 2, characterSkin['blush_3']) ---@diagnostic disable-line
+        SetPedHeadOverlay(ped, 6, characterSkin['complexion_1'], (characterSkin['complexion_2'] / 10) + 0.0) -- Complexion + opacity
+        SetPedHeadOverlay(ped, 7, characterSkin['sun_1'], (characterSkin['sun_2'] / 10) + 0.0)               -- Sun Damage + opacity
+        SetPedHeadOverlay(ped, 9, characterSkin['moles_1'], (characterSkin['moles_2'] / 10) + 0.0)           -- Moles/Freckles + opacity
+        SetPedHeadOverlay(ped, 10, characterSkin['chest_1'], (characterSkin['chest_2'] / 10) + 0.0)          -- Chest Hair + opacity
+        SetPedHeadOverlayColor(ped, 10, 1, characterSkin['chest_3']) ---@diagnostic disable-line
 
-    if characterSkin['bodyb_1'] == -1 then
-        SetPedHeadOverlay(ped, 11, 255, (characterSkin['bodyb_2'] / 10) + 0.0) -- Body Blemishes + opacity
-    else
-        SetPedHeadOverlay(ped, 11, characterSkin['bodyb_1'], (characterSkin['bodyb_2'] / 10) + 0.0)
-    end
+        if characterSkin['bodyb_1'] == -1 then
+            SetPedHeadOverlay(ped, 11, 255, (characterSkin['bodyb_2'] / 10) + 0.0) -- Body Blemishes + opacity
+        else
+            SetPedHeadOverlay(ped, 11, characterSkin['bodyb_1'], (characterSkin['bodyb_2'] / 10) + 0.0)
+        end
 
-    if characterSkin['bodyb_3'] == -1 then
-        SetPedHeadOverlay(ped, 12, 255, (characterSkin['bodyb_4'] / 10) + 0.0)
-    else
-        SetPedHeadOverlay(ped, 12, characterSkin['bodyb_3'], (characterSkin['bodyb_4'] / 10) + 0.0) -- Blemishes 'added body effect' + opacity
-    end
+        if characterSkin['bodyb_3'] == -1 then
+            SetPedHeadOverlay(ped, 12, 255, (characterSkin['bodyb_4'] / 10) + 0.0)
+        else
+            SetPedHeadOverlay(ped, 12, characterSkin['bodyb_3'], (characterSkin['bodyb_4'] / 10) + 0.0) -- Blemishes 'added body effect' + opacity
+        end
 
-    if characterSkin['ears_1'] == -1 then
-        ClearPedProp(ped, 2)
-    else
-        SetPedPropIndex(ped, 2, characterSkin['ears_1'], characterSkin['ears_2'], 2) -- Ears Accessories
-    end
+        if characterSkin['ears_1'] == -1 then
+            ClearPedProp(ped, 2)
+        else
+            SetPedPropIndex(ped, 2, characterSkin['ears_1'], characterSkin['ears_2'], 2) -- Ears Accessories
+        end
 
-    SetPedComponentVariation(ped, 8, characterSkin['tshirt_1'], characterSkin['tshirt_2'], 2)  -- Tshirt
-    SetPedComponentVariation(ped, 11, characterSkin['torso_1'], characterSkin['torso_2'], 2)   -- torso parts
-    SetPedComponentVariation(ped, 3, characterSkin['arms'], characterSkin['arms_2'], 2)        -- Arms
-    SetPedComponentVariation(ped, 10, characterSkin['decals_1'], characterSkin['decals_2'], 2) -- decals
-    SetPedComponentVariation(ped, 4, characterSkin['pants_1'], characterSkin['pants_2'], 2)    -- pants
-    SetPedComponentVariation(ped, 6, characterSkin['shoes_1'], characterSkin['shoes_2'], 2)    -- shoes
-    SetPedComponentVariation(ped, 1, characterSkin['mask_1'], characterSkin['mask_2'], 2)      -- mask
-    SetPedComponentVariation(ped, 9, characterSkin['bproof_1'], characterSkin['bproof_2'], 2)  -- bulletproof
-    SetPedComponentVariation(ped, 7, characterSkin['chain_1'], characterSkin['chain_2'], 2)    -- chain
-    SetPedComponentVariation(ped, 5, characterSkin['bags_1'], characterSkin['bags_2'], 2)      -- Bag
+        SetPedComponentVariation(ped, 8, characterSkin['tshirt_1'], characterSkin['tshirt_2'], 2)  -- Tshirt
+        SetPedComponentVariation(ped, 11, characterSkin['torso_1'], characterSkin['torso_2'], 2)   -- torso parts
+        SetPedComponentVariation(ped, 3, characterSkin['arms'], characterSkin['arms_2'], 2)        -- Arms
+        SetPedComponentVariation(ped, 10, characterSkin['decals_1'], characterSkin['decals_2'], 2) -- decals
+        SetPedComponentVariation(ped, 4, characterSkin['pants_1'], characterSkin['pants_2'], 2)    -- pants
+        SetPedComponentVariation(ped, 6, characterSkin['shoes_1'], characterSkin['shoes_2'], 2)    -- shoes
+        SetPedComponentVariation(ped, 1, characterSkin['mask_1'], characterSkin['mask_2'], 2)      -- mask
+        SetPedComponentVariation(ped, 9, characterSkin['bproof_1'], characterSkin['bproof_2'], 2)  -- bulletproof
+        SetPedComponentVariation(ped, 7, characterSkin['chain_1'], characterSkin['chain_2'], 2)    -- chain
+        SetPedComponentVariation(ped, 5, characterSkin['bags_1'], characterSkin['bags_2'], 2)      -- Bag
 
-    if characterSkin['helmet_1'] == -1 then
-        ClearPedProp(ped, 0)
-    else
-        SetPedPropIndex(ped, 0, characterSkin['helmet_1'], characterSkin['helmet_2'], 2) -- Helmet
-    end
+        if characterSkin['helmet_1'] == -1 then
+            ClearPedProp(ped, 0)
+        else
+            SetPedPropIndex(ped, 0, characterSkin['helmet_1'], characterSkin['helmet_2'], 2) -- Helmet
+        end
 
-    if characterSkin['glasses_1'] == -1 then
-        ClearPedProp(ped, 1)
-    else
-        SetPedPropIndex(ped, 1, characterSkin['glasses_1'], characterSkin['glasses_2'], 2) -- Glasses
-    end
+        if characterSkin['glasses_1'] == -1 then
+            ClearPedProp(ped, 1)
+        else
+            SetPedPropIndex(ped, 1, characterSkin['glasses_1'], characterSkin['glasses_2'], 2) -- Glasses
+        end
 
-    if characterSkin['watches_1'] == -1 then
-        ClearPedProp(ped, 6)
-    else
-        SetPedPropIndex(ped, 6, characterSkin['watches_1'], characterSkin['watches_2'], 2) -- Watches
-    end
+        if characterSkin['watches_1'] == -1 then
+            ClearPedProp(ped, 6)
+        else
+            SetPedPropIndex(ped, 6, characterSkin['watches_1'], characterSkin['watches_2'], 2) -- Watches
+        end
 
-    if characterSkin['bracelets_1'] == -1 then
-        ClearPedProp(ped, 7)
-    else
-        SetPedPropIndex(ped, 7, characterSkin['bracelets_1'], characterSkin['bracelets_2'], 2) -- Bracelets
-    end
+        if characterSkin['bracelets_1'] == -1 then
+            ClearPedProp(ped, 7)
+        else
+            SetPedPropIndex(ped, 7, characterSkin['bracelets_1'], characterSkin['bracelets_2'], 2) -- Bracelets
+        end
+    end)
 end
 
 function ESXClient:init()
     ESX = exports['es_extended']:getSharedObject()
 
     self.cachedCharacters = {}
-    self.selected = nil
+    self.slots = nil
 
     if not ESX.GetConfig().Multichar then
         print('Multichar is disabled in ESX config!')
@@ -350,14 +353,27 @@ function ESXClient:init()
     end
 
     RegisterNetEvent('esx:playerLoaded')
-    AddEventHandler('esx:playerLoaded', function(playerData)
-        print(playerData, 'lol')
-        print(json.encode(playerData, { indent = true }))
+    AddEventHandler('esx:playerLoaded', function(playerData, isNew, skin)
+        if isNew then
+            SendNUIMessage({ type = 'navigate', payload = '/' })
+            SetNuiFocus(false, false)
+
+            TriggerEvent('skinchanger:loadSkin', skin, function()
+                TriggerEvent('esx_skin:openSaveableMenu', function()
+                    TriggerServerEvent('esx_multicharacter:relog')
+                    gStateMachine:change('idle', { transition = false })
+                end)
+
+                SetEntityHeading(PlayerPedId(), 180.0)
+            end)
+
+            return
+        end
 
         local playerPed = PlayerPedId()
-        local spawnCoords = playerData.coords or vector4(0, 0, 0, 0)
+        local spawnCoords = playerData.coords or vector4(428.23, -984.28, 29.76, 3.5)
 
-        TriggerEvent('skinchanger:loadSkin', self.cachedCharacters[self.selected].skin)
+        TriggerEvent('skinchanger:loadSkin', skin)
 
         SetEntityCoordsNoOffset(playerPed, spawnCoords.xyz, false, false, false) ---@diagnostic disable-line
         SetEntityHeading(playerPed, spawnCoords.w)
@@ -376,15 +392,25 @@ function ESXClient:init()
                 ShutdownLoadingScreen()
                 ShutdownLoadingScreenNui()
                 TriggerEvent('esx:loadingScreenOff')
+
+                RequestModel('mp_m_freemode_01')
+
+                while not HasModelLoaded('mp_m_freemode_01') do
+                    Wait(0)
+                end
+
                 exports.spawnmanager:spawnPlayer({
                     x = 0.0,
                     y = 0.0,
                     z = 0.0,
                     heading = 0.0,
-                    model = 'player_zero',
+                    model = 'mp_m_freemode_01',
                     skipFade = true
-                })
-                startGTAOMulticharacter()
+                }, function()
+                    SetPedDefaultComponentVariation(PlayerPedId())
+                    SetModelAsNoLongerNeeded('mp_m_freemode_01')
+                    startGTAOMulticharacter()
+                end)
                 break
             end
         end
@@ -397,14 +423,15 @@ function ESXClient:fetchAndCacheCharacters()
     local onSetupCharactersEvent = nil
     onSetupCharactersEvent = RegisterNetEvent('esx_multicharacter:SetupUI', function(characters, slots)
         RemoveEventHandler(onSetupCharactersEvent)
-        p:resolve(characters)
+        p:resolve({ characters = characters, slots = slots })
     end)
 
     TriggerServerEvent("esx_multicharacter:SetupCharacters")
 
     Citizen.Await(p)
 
-    self.cachedCharacters = p.value ~= nil and p.value or {}
+    self.cachedCharacters = p.value ~= nil and p.value.characters or {}
+    self.slots = p.value ~= nil and p.value.slots or 1
 
     for _, character in pairs(self.cachedCharacters) do
         character.model = getCharacterModel(character)
@@ -458,12 +485,21 @@ function ESXClient:onCharacterSpawn(character)
 end
 
 function ESXClient:onCharacterSelect(character)
-    self.selected = character.identifier
-
-    TriggerServerEvent('esx_multicharacter:CharacterChosen', character.identifier)
+    TriggerServerEvent('esx_multicharacter:CharacterChosen', character.identifier, false)
 end
 
 function ESXClient:onCharacterCreate(character)
+    local slot = self.slots
+
+    for i = 1, self.slots do
+        if not self.cachedCharacters[i] then
+            slot = i
+            break
+        end
+    end
+
+    TriggerServerEvent('esx_multicharacter:CharacterChosen', slot, true)
+    TriggerEvent('esx_identity:showRegisterIdentity')
 end
 
 function ESXClient:onCharacterDelete(character)

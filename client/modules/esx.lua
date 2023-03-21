@@ -346,14 +346,14 @@ function ESXClient:init()
 
     self.cachedCharacters = {}
     self.slots = nil
+    self.canRelog = true
 
     if not ESX.GetConfig().Multichar then
         print('Multichar is disabled in ESX config!')
         return
     end
 
-    RegisterNetEvent('esx:playerLoaded')
-    AddEventHandler('esx:playerLoaded', function(playerData, isNew, skin)
+    self.onPlayerLoadedEvent = RegisterNetEvent('esx:playerLoaded', function(playerData, isNew, skin)
         if isNew then
             SetNuiFocus(false, false)
             TriggerEvent('skinchanger:loadSkin', skin, function()
@@ -381,6 +381,21 @@ function ESXClient:init()
         TriggerEvent('playerSpawned')
         TriggerEvent('esx:restoreLoadout')
     end)
+
+    self.onPlayerLogoutEvent = RegisterNetEvent('esx:onPlayerLogout', function()
+        TriggerEvent('esx_skin:resetFirstSpawn')
+        startGTAOMulticharacter()
+    end)
+
+    RegisterCommand('relog', function(source, args, rawCommand)
+        if self.canRelog then
+            self.canRelog = false
+            TriggerServerEvent('esx_multicharacter:relog')
+            ESX.SetTimeout(10000, function()
+                self.canRelog = true
+            end)
+        end
+    end, false)
 
     Citizen.CreateThread(function()
         while not ESX.PlayerLoaded do
@@ -488,6 +503,9 @@ function ESXClient:onCharacterDelete(character)
 end
 
 function ESXClient:destroy()
+    RemoveEventHandler(self.onPlayerLoadedEvent)
+    RemoveEventHandler(self.onPlayerLogoutEvent)
+
     stopGTAOMulticharacter()
 
     gFramework = nil

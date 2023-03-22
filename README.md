@@ -35,19 +35,26 @@ This resource has two dependencies, [fivepunch-multicharacter](https://forum.cfx
 
 1. Download the latest version of **GTAO Multicharacter** from the releases section.
 2. Drag the `gtao-multicharacter` folder to your resources directory.
-3. Add `ensure gtao-multicharacter` to your `server.cfg`
+3. Add `ensure gtao-multicharacter` to your `server.cfg`.
 
 ### QB-Core specific
 
 1. Remove `qb-multicharacter` from your `server.cfg` or delete the resource folder inside `[resources]/[qb]`
+2. Remove the following codeblock in [qb-interior](https://github.com/qbcore-framework/qb-interior/blob/82555d64297ae90045bfa4831e38ab28fdd36f91/client/main.lua#L71):
+    ```lua
+      if IsNew then
+          SetTimeout(750, function()
+              TriggerEvent('qb-clothes:client:CreateFirstCharacter')
+              IsNew = false
+          end)
+      end
+    ```
 
 ### ESX specific
 
-1. Remove the `client_scripts { 'client/*.lua' }` entry from `esx_multicharacter` fxmanifest.lua
+1. Remove the `client_scripts { 'client/*.lua' }` entry from `esx_multicharacter` fxmanifest.lua. Yes, just `client_scripts`, keep `shared_scripts`.
 
-GTAO Multicharacter re-utilizes the server side resources of `esx_multicharacter` to have maximum compatibility with the framework.
-
-And yes, just `client_scripts`. Please keep `shared_scripts`.
+    GTAO Multicharacter re-utilizes the server side resources of `esx_multicharacter` to have maximum compatibility with the framework.
 
 ## License
 

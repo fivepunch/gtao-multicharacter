@@ -10,7 +10,9 @@ function QBClient:init()
     TriggerEvent('qb-weathersync:client:DisableSync')
 
     -- Ensure that the player is not logged in
-    TriggerServerEvent('gtao-multicharacter:server:logoutFromCharacter')
+    if LocalPlayer.state['isLoggedIn'] then
+        TriggerServerEvent('gtao-multicharacter:server:logoutFromCharacter')
+    end
 
     Citizen.CreateThread(function()
         while true do

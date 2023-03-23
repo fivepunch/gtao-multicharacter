@@ -23,15 +23,21 @@ Check the documentation to explore all your possibilities.
 
 The resource provides framework support for the default server recipe of each framework. If you're having trouble using custom resources, see the forum post for frequent snippets and support.
 
-Currently supported frameworks: **ESX** | **QB-Core**
-
 Feel free to contribute or provide help on the forums. :)
+
+### ESX
+GTAO Multicharacter uses default ESX resources as dependencies like `skinchanger`, `esx_skin` and `esx_identity`.
+
+### QB-Core
+GTAO Multicharacter uses default QB-Core resources as dependencies like `qb-clothing`.
 
 ## Installation
 
 This resource has two dependencies, [fivepunch-multicharacter](https://forum.cfx.re/t/standalone-fivepunch-multicharacter/5013987) and [oxmysql](https://github.com/overextended/oxmysql). Make sure they're both installed before continuing.
 
 *Fivepunch Multicharacter is a paid resource, [purchase it here](https://fivepunch.tebex.io/package/5504485). You'll need it to GTAO Multicharacter work properly.
+
+### All frameworks
 
 1. Download the latest version of **GTAO Multicharacter** from the releases section.
 2. Drag the `gtao-multicharacter` folder to your resources directory.

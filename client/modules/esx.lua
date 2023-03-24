@@ -345,14 +345,11 @@ end
 function ESXClient:init()
     ESX = exports['es_extended']:getSharedObject()
 
+    assert(ESX.GetConfig().Multichar, 'Multichar is disabled in ESX config!')
+
     self.cachedCharacters = {}
     self.slots = nil
     self.canRelog = true
-
-    if not ESX.GetConfig().Multichar then
-        print('Multichar is disabled in ESX config!')
-        return
-    end
 
     self.onPlayerLoadedEvent = RegisterNetEvent('esx:playerLoaded', function(playerData, isNew, skin)
         if isNew then

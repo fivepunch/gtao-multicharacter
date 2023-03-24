@@ -61,7 +61,21 @@ local function giveStarterItems(source)
     end
 end
 
+local function runEnvironmentCheck()
+    if not hasResource('qb-clothing') then
+        return nil, "qb-clothing is missing in your server. This resource doesn't support custom QB-Core setups."
+    end
+
+    return true
+end
+
 function QBServer:init()
+    -- This verifies if your environment satisfies this resource requirements.
+    -- If you wish to adapt this resource to suit your needs, you can safely comment this.
+    if assert(runEnvironmentCheck()) then
+        print('^2QB-Core environment check successfull!')
+    end
+
     QBCore = exports['qb-core']:GetCoreObject()
 
     self.hasDonePreloading = {}

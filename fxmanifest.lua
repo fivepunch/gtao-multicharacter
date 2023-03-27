@@ -19,6 +19,7 @@ client_scripts {
     'client/states/createState.lua',
     'client/states/selectState.lua',
     'client/states/deleteState.lua',
+    'client/bridge.lua',
     'client/modules/*.lua',
     'client/main.lua'
 }

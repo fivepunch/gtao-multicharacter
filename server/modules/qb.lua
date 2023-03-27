@@ -167,6 +167,21 @@ function QBServer:init()
         cb(true)
     end)
 
+    self.onSaveAppearanceAndLogoutEvent = RegisterNetEvent('gtao-multicharacter:server:saveAppearanceAndLogout',
+        function(model, appearance)
+            local src = source
+
+            if model == nil or appearance == nil then return end
+
+            local citizenId = QBCore.Functions.GetPlayer(src).PlayerData.citizenid
+
+            MySQL.query.await('DELETE FROM playerskins WHERE citizenid = ?', { citizenId })
+            MySQL.insert.await('INSERT INTO playerskins (citizenid, model, skin, active) VALUES (?, ?, ?, ?)',
+                { citizenId, model, json.encode(appearance), 1 })
+
+            QBCore.Player.Logout(src)
+        end)
+
     self.onLogoutFromCharacterEvent = RegisterNetEvent('gtao-multicharacter:server:logoutFromCharacter', function()
         local src = source
         QBCore.Player.Logout(src)
@@ -183,6 +198,7 @@ function QBServer:destroy()
     RemoveEventHandler(self.onPlayerLoadedEvent)
     RemoveEventHandler(self.onPlayerUnloadedEvent)
     RemoveEventHandler(self.onLoadCharacterEvent)
+    RemoveEventHandler(self.onSaveAppearanceAndLogoutEvent)
     RemoveEventHandler(self.onLogoutFromCharacterEvent)
     RemoveEventHandler(self.onDeleteCharacterEvent)
 

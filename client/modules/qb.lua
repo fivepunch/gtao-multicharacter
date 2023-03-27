@@ -2,6 +2,15 @@ local QBCore = nil
 
 QBClient = Class {}
 
+local function registerReturnToSelectionOnUnloadHandler()
+    local onPlayerUnloadEvent = nil
+
+    onPlayerUnloadEvent = RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+        RemoveEventHandler(onPlayerUnloadEvent)
+        gStateMachine:change('idle', { transition = false })
+    end)
+end
+
 function QBClient:init()
     QBCore = exports['qb-core']:GetCoreObject()
 
@@ -79,6 +88,11 @@ end
 function QBClient:onCharacterSpawn(character)
     for _, cached in pairs(self.cachedCharacters) do
         if cached.citizenid == character.identifier then
+            if hasResource('fivem-appearance') then
+                exports['fivem-appearance']:setPedAppearance(character.ped, decodeQBCoreAppearance(cached.skin))
+                return
+            end
+
             TriggerEvent('qb-clothing:client:loadPlayerClothing', cached.skin, character.ped)
         end
     end
@@ -113,6 +127,21 @@ function QBClient:onCharacterCreate(character)
     Citizen.Await(p)
 
     SendNUIMessage({ type = 'navigate', payload = '/' })
+
+    if hasResource('fivem-appearance') then
+        registerReturnToSelectionOnUnloadHandler()
+
+        exports['fivem-appearance']:startPlayerCustomization(function(appearance)
+            if not appearance then
+                TriggerServerEvent('gtao-multicharacter:server:logoutFromCharacter')
+                return
+            end
+
+            TriggerServerEvent('gtao-multicharacter:server:saveAppearanceAndLogout', encodeQBCoreAppearance(appearance))
+        end)
+
+        return
+    end
 
     TriggerEvent('qb-clothes:client:CreateFirstCharacter')
 

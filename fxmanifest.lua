@@ -4,7 +4,7 @@ game { 'gta5' }
 title 'GTAO Multicharacter'
 description 'Fivepunch GTAO themed multi character script.'
 author 'Fivepunch https://fivepunch.io'
-version '1.0.0'
+version '1.2.0'
 
 lua54 'yes'
 

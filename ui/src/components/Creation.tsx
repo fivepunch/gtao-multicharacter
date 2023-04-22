@@ -29,6 +29,11 @@ if (!__IS_CFX_NUI) {
         { value: false, label: 'Female' },
       ],
     },
+    {
+      type: 'date',
+      name: 'dateOfBirth',
+      label: 'Date of birth',
+    },
   ]);
 }
 
@@ -99,7 +104,7 @@ export function Creation() {
         </h1>
         <form className="flex flex-col gap-4 text-white mt-8" onSubmit={handleSubmit}>
           {formStructure.map(input => (
-            <Input {...input} />
+            <Input key={input.name} {...input} />
           ))}
           <Button type="submit" className="h-10 mt-6 text-lg">
             Create

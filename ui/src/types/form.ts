@@ -1,16 +1,18 @@
-interface _FormInput {
+type FormInputTypes = React.ComponentPropsWithoutRef<'input'>['type'];
+
+interface GenericFormInput {
   name: string;
   label: string;
-  type: string;
+  type: FormInputTypes;
 }
 
-interface FormTextInput extends _FormInput {
+export interface FormTextInput extends GenericFormInput {
   type: 'text';
 }
 
-interface FormSelectInput extends _FormInput {
+export interface FormSelectInput extends GenericFormInput {
   type: 'select';
   options: { value: unknown; label: string }[];
 }
 
-export type FormInput = FormTextInput | FormSelectInput;
+export type FormInput = FormTextInput | FormSelectInput | GenericFormInput;
